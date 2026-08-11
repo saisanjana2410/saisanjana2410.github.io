@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Understanding JavaScript closures, practical examples, and data hiding using closures."
+  >
+
+  <title>Closures — Sai Sanjana Kambalapally</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <script src="../theme.js" defer></script>
+
+</head>
+
+
+<body>
+
+  <header class="site-header">
+
+    <div class="container nav-container">
+
+      <a href="/" class="logo">
+        Sai Sanjana Kambalapally
+      </a>
+
+      <nav class="nav">
+
+        <a href="../index.html">
+          Home
+        </a>
+
+        <a href="../index.html#articles">
+          Articles
+        </a>
+
+        <a
+          href="https://github.com/saisanjana2410"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub ↗
+        </a>
+
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch theme"
+        >
+          <span class="theme-icon">☾</span>
+          <span class="theme-label">Dark</span>
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <main class="article-page">
+
+    <a
+      href="../index.html#articles"
+      class="back-link"
+    >
+      ← Back to articles
+    </a>
+
+
+    <header class="article-header">
+
+      <div class="article-meta">
+
+        <span class="category">
+          JavaScript
+        </span>
+
+        <span>·</span>
+
+        <span>August 2026</span>
+
+      </div>
+
+
+      <h1>
+        Closures
+      </h1>
+
+
+      <p class="article-subtitle">
+        How can a function remember something after
+        the function that created it has finished?
+      </p>
+
+    </header>
+
+
+    <article class="article-body">
+
+
+      <p>
+        Closures were one of those JavaScript concepts that
+        initially sounded almost magical.
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          A function finishes running. So how can another
+          function still access its variables?
+        </strong>
+
+      </div>
+
+
+      <p>
+        Let's not start with the definition. Let's start
+        with the problem.
+      </p>
+
+
+      <h2>
+        A simple counter
+      </h2>
+
+
+      <pre><code>function createCounter() {
+  let count = 0;
+
+  return function () {
+    count++;
+
+    return count;
+  };
+}</code></pre>
+
+
+      <p>
+        Now:
+      </p>
+
+
+      <pre><code>const counter = createCounter();</code></pre>
+
+
+      <p>
+        And:
+      </p>
+
+
+      <pre><code>console.log(counter()); // 1
+console.log(counter()); // 2
+console.log(counter()); // 3</code></pre>
+
+
+      <p>
+        The obvious question is:
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          Why isn't count reset to 0 every time counter()
+          is called?
+        </strong>
+
+      </div>
+
+
+      <h2>
+        First, understand where count lives
+      </h2>
+
+
+      <p>
+        When <code>createCounter()</code> runs, it creates
+        a local binding:
+      </p>
+
+
+      <pre><code>count → 0</code></pre>
+
+
+      <p>
+        The returned function refers to that binding.
+      </p>
+
+
+      <p>
+        So when the outer function finishes, JavaScript cannot
+        simply make the environment containing <code>count</code>
+        inaccessible while the returned function still needs it.
+      </p>
+
+
+      <p>
+        The returned function retains access to the lexical
+        environment around where it was created.
+      </p>
+
+
+      <p>
+        That retained access is what we call a
+        <strong>closure</strong>.
+      </p>
+
+
+      <p>
+        The relationship between execution contexts, lexical
+        environments, and closures is explored in more detail
+        in <a href="execution-context.html">
+          Execution Context
+        </a>.
+      </p>
+
+
+      <h2>
+        counter() does not create count again
+      </h2>
+
+
+      <p>
+        This is an important distinction.
+      </p>
+
+
+      <p>
+        We are not doing this every time:
+      </p>
+
+
+      <pre><code>createCounter();</code></pre>
+
+
+      <p>
+        We did it once:
+      </p>
+
+
+      <pre><code>const counter = createCounter();</code></pre>
+
+
+      <p>
+        Then we repeatedly call the returned function:
+      </p>
+
+
+      <pre><code>counter();
+counter();
+counter();</code></pre>
+
+
+      <p>
+        Each call accesses the same closed-over
+        <code>count</code> binding.
+      </p>
+
+
+      <pre class="diagram">count = 0
+   ↓
+counter()
+   ↓
+count = 1
+   ↓
+counter()
+   ↓
+count = 2
+   ↓
+counter()
+   ↓
+count = 3</pre>
+
+
+      <h2>
+        What about counter2?
+      </h2>
+
+
+      <p>
+        Now we can answer another interesting question.
+      </p>
+
+
+      <pre><code>const counter1 = createCounter();
+
+const counter2 = createCounter();</code></pre>
+
+
+      <p>
+        These counters do not share the same
+        <code>count</code>.
+      </p>
+
+
+      <p>
+        Why?
+      </p>
+
+
+      <p>
+        Because <code>createCounter()</code> was executed twice.
+        Each call creates its own environment.
+      </p>
+
+
+      <pre class="diagram">counter1
+    ↓
+Environment A
+    ↓
+count = 0
+
+
+counter2
+    ↓
+Environment B
+    ↓
+count = 0</pre>
+
+
+      <p>
+        Now:
+      </p>
+
+
+      <pre><code>counter1();
+counter1();
+
+counter2();
+
+console.log(counter1()); // 3
+console.log(counter2()); // 2</code></pre>
+
+
+      <p>
+        Each closure has access to its own lexical environment.
+      </p>
+
+
+      <h2>
+        A closure isn't a copied value
+      </h2>
+
+
+      <p>
+        It is tempting to imagine that JavaScript takes
+        <code>count = 0</code> and attaches a copy of it
+        to the returned function.
+      </p>
+
+
+      <p>
+        But that mental model doesn't explain mutation very well.
+      </p>
+
+
+      <pre><code>count++;
+
+return count;</code></pre>
+
+
+      <p>
+        The function is accessing the binding itself, which is
+        why changes made by one call are visible to later calls
+        through that same closure.
+      </p>
+
+
+      <p>
+        So a more useful definition is:
+      </p>
+
+
+      <div class="callout">
+
+        <strong>
+          A closure is a function together with its retained
+          access to the lexical environment around where it
+          was created.
+        </strong>
+
+      </div>
+
+
+      <h2>
+        Practical Example: Private State
+      </h2>
+
+
+      <p>
+        One of the most useful applications of closures is
+        keeping state private.
+      </p>
+
+
+      <pre><code>function createCounter() {
+
+  let count = 0;
+
+  return {
+
+    increment() {
+      count++;
+    },
+
+    decrement() {
+      count--;
+    },
+
+    getCount() {
+      return count;
+    }
+
+  };
+}</code></pre>
+
+
+      <p>
+        Now:
+      </p>
+
+
+      <pre><code>const counter = createCounter();
+
+counter.increment();
+counter.increment();
+
+console.log(counter.getCount()); // 2</code></pre>
+
+
+      <p>
+        But:
+      </p>
+
+
+      <pre><code>console.log(counter.count);</code></pre>
+
+
+      <p>
+        gives:
+      </p>
+
+
+      <pre><code>undefined</code></pre>
+
+
+      <p>
+        There is no public <code>count</code> property on
+        the returned object.
+      </p>
+
+
+      <p>
+        The methods can access <code>count</code> because they
+        were created in the lexical environment where
+        <code>count</code> exists.
+      </p>
+
+
+      <h2>
+        Data hiding using closures
+      </h2>
+
+
+      <p>
+        This gives us a simple form of
+        <strong>data hiding</strong>.
+      </p>
+
+
+      <pre><code>function createBankAccount() {
+
+  let balance = 0;
+
+  return {
+
+    deposit(amount) {
+      balance += amount;
+    },
+
+    getBalance() {
+      return balance;
+    }
+
+  };
+}</code></pre>
+
+
+      <p>
+        The outside code can interact with the account through
+        the methods:
+      </p>
+
+
+      <pre><code>const account = createBankAccount();
+
+account.deposit(100);
+
+console.log(account.getBalance()); // 100</code></pre>
+
+
+      <p>
+        But outside code cannot directly manipulate the
+        <code>balance</code> binding:
+      </p>
+
+
+      <pre><code>account.balance = 1000000;</code></pre>
+
+
+      <p>
+        That assignment doesn't change the private
+        <code>balance</code> used by <code>getBalance()</code>.
+      </p>
+
+
+      <p>
+        The closure has created a boundary around the state.
+      </p>
+
+
+      <h2>
+        Practical Example: Function Factory
+      </h2>
+
+
+      <p>
+        Closures aren't only useful for counters.
+      </p>
+
+
+      <p>
+        We can create functions that remember configuration.
+      </p>
+
+
+      <pre><code>function multiplyBy(multiplier) {
+
+  return function (number) {
+
+    return number * multiplier;
+
+  };
+
+}
+
+const double = multiplyBy(2);
+
+const triple = multiplyBy(3);
+
+console.log(double(5)); // 10
+
+console.log(triple(5)); // 15</code></pre>
+
+
+      <p>
+        <code>double</code> remembers the
+        <code>multiplier</code> from the call that created it.
+      </p>
+
+
+      <p>
+        <code>triple</code> remembers a different one.
+      </p>
+
+
+      <pre class="diagram">double
+  ↓
+multiplier = 2
+
+
+triple
+  ↓
+multiplier = 3</pre>
+
+
+      <h2>
+        Why does this work?
+      </h2>
+
+
+      <p>
+        Because lexical scope is based on where a function
+        is created, not simply where it is called.
+      </p>
+
+
+      <pre><code>function outer() {
+
+  const message = "Hello";
+
+  return function inner() {
+
+    console.log(message);
+
+  };
+
+}</code></pre>
+
+
+      <p>
+        <code>inner</code> was created inside
+        <code>outer</code>.
+      </p>
+
+
+      <p>
+        Therefore <code>inner</code> has lexical access to
+        the environment containing <code>message</code>.
+      </p>
+
+
+      <p>
+        This is the same scope relationship discussed in
+        <a href="execution-context.html">
+          Execution Context
+        </a>.
+      </p>
+
+
+      <h2>
+        The mental model
+      </h2>
+
+
+      <pre class="diagram">Function is created
+        ↓
+It has a lexical surrounding
+        ↓
+It refers to an outer binding
+        ↓
+The function retains access
+to that environment
+        ↓
+Outer function can finish
+        ↓
+Returned function can still
+use the binding
+        ↓
+Closure</pre>
+
+
+      <p>
+        Once you see closures this way, counters, private state,
+        function factories, callbacks, and many other patterns
+        stop looking like unrelated JavaScript tricks.
+      </p>
+
+
+      <p>
+        They're different uses of the same underlying idea:
+        a function retaining access to the lexical environment
+        around where it was created.
+      </p>
+
+
+    </article>
+
+  </main>
+
+
+  <footer class="footer container">
+
+    <p>
+      Built while learning.
+    </p>
+
+    <p>
+      © 2026 Sai Sanjana Kambalapally
+    </p>
+
+  </footer>
+
+</body>
+
+</html>

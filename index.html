@@ -2,26 +2,358 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Name — JavaScript Notes</title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Saisanjana's personal website — learning web development by understanding how things work under the hood."
+  >
+
+  <title>Sai Sanjana Kambalapally — Web Developer</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>JavaScript, Explained</h1>
 
-  <p>
-    I'm learning JavaScript by trying to understand
-    what happens under the hood.
-  </p>
+  <!-- Navigation -->
 
-  <h2>Articles</h2>
+  <header class="site-header">
 
-  <ul>
-    <li>
-      <a href="articles/execution-context.html">
-        Execution Context: Building the Mental Model
+    <div class="container nav-container">
+
+      <a href="/" class="logo">
+        Saisanjana
       </a>
-    </li>
-  </ul>
+
+      <nav class="nav">
+
+        <a href="#about">About</a>
+
+        <a href="#articles">Articles</a>
+
+        <a href="#projects">Projects</a>
+
+        <a
+          href="https://github.com/saisanjana2410"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub ↗
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <main>
+
+    <!-- Hero -->
+
+    <section class="hero container">
+
+      <p class="eyebrow">
+        Web Development
+      </p>
+
+      <h1>
+        Learning how things
+        <span>work under the hood.</span>
+      </h1>
+
+      <p class="hero-description">
+        I'm learning web development by trying to understand
+        the mental models behind the technologies I use —
+        not just memorizing how to use them.
+      </p>
+
+      <div class="hero-links">
+
+        <a
+          href="https://github.com/saisanjana2410"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub ↗
+        </a>
+
+        <a href="#articles">
+          Read my notes ↓
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- About -->
+
+    <section id="about" class="section container">
+
+      <div class="section-label">
+
+        <span>01</span>
+
+        <span>About</span>
+
+      </div>
+
+
+      <div class="section-content">
+
+        <p>
+          I'm learning web development with a focus on
+          understanding the fundamentals rather than
+          memorizing rules.
+        </p>
+
+        <p>
+          When I learn something, I like to understand
+          what problem it solves, why it works, and what
+          JavaScript or the browser is actually doing
+          underneath the abstraction.
+        </p>
+
+        <p>
+          This website is where I document those mental
+          models as I learn.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- Articles -->
+
+    <section id="articles" class="section container">
+
+      <div class="section-label">
+
+        <span>02</span>
+
+        <span>Articles</span>
+
+      </div>
+
+
+      <div class="section-content">
+
+        <a
+          href="articles/execution-context.html"
+          class="article"
+        >
+
+          <div>
+
+            <p class="article-number">
+              01
+            </p>
+
+            <h2>
+              Execution Context
+            </h2>
+
+            <p class="article-description">
+              Building a mental model of how JavaScript
+              actually executes code.
+            </p>
+
+          </div>
+
+          <span class="article-arrow">
+            ↗
+          </span>
+
+        </a>
+
+
+        <a
+          href="articles/hoisting-tdz.html"
+          class="article"
+        >
+
+          <div>
+
+            <p class="article-number">
+              02
+            </p>
+
+            <h2>
+              Hoisting & the Temporal Dead Zone
+            </h2>
+
+            <p class="article-description">
+              Understanding what hoisting really means
+              and why let and const behave differently.
+            </p>
+
+          </div>
+
+          <span class="article-arrow">
+            ↗
+          </span>
+
+        </a>
+
+
+        <a
+          href="articles/closures.html"
+          class="article"
+        >
+
+          <div>
+
+            <p class="article-number">
+              03
+            </p>
+
+            <h2>
+              Closures
+            </h2>
+
+            <p class="article-description">
+              How functions remember their surrounding
+              lexical environment.
+            </p>
+
+          </div>
+
+          <span class="article-arrow">
+            ↗
+          </span>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- Projects -->
+
+    <section id="projects" class="section container">
+
+      <div class="section-label">
+
+        <span>03</span>
+
+        <span>Projects</span>
+
+      </div>
+
+
+      <div class="section-content">
+
+        <div class="project">
+
+          <div class="project-top">
+
+            <h2>
+              JavaScript Learning Projects
+            </h2>
+
+            <span>
+              2026
+            </span>
+
+          </div>
+
+          <p>
+            Small projects built while learning JavaScript,
+            focusing on understanding the language rather
+            than simply completing tutorials.
+          </p>
+
+          <div class="tags">
+
+            <span>JavaScript</span>
+
+            <span>HTML</span>
+
+            <span>CSS</span>
+
+          </div>
+
+        </div>
+
+
+        <div class="project">
+
+          <div class="project-top">
+
+            <h2>
+              More coming soon
+            </h2>
+
+            <span>
+              —
+            </span>
+
+          </div>
+
+          <p>
+            I'm learning, building, and documenting along
+            the way.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Currently Learning -->
+
+    <section class="section container">
+
+      <div class="section-label">
+
+        <span>04</span>
+
+        <span>Currently Learning</span>
+
+      </div>
+
+
+      <div class="section-content learning">
+
+        <span>JavaScript</span>
+
+        <span>Web Development</span>
+
+        <span>HTML & CSS</span>
+
+        <span>Git & GitHub</span>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- Footer -->
+
+  <footer class="footer container">
+
+    <p>
+      Built while learning.
+    </p>
+
+    <p>
+      © 2026 Saisanjana
+    </p>
+
+  </footer>
+
 </body>
 </html>

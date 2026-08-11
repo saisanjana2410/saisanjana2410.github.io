@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -11,134 +12,15 @@
 
   <meta
     name="description"
-    content="Understanding JavaScript execution contexts by building a mental model from first principles."
+    content="Understanding JavaScript execution context, the call stack, memory creation phase, and execution phase."
   >
 
-  <title>Execution Context — Saisanjana</title>
+  <title>Execution Context — Sai Sanjana Kambalapally</title>
 
   <link rel="stylesheet" href="../style.css">
 
-  <style>
-    .article-page {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 100px 0 120px;
-    }
+  <script src="../theme.js" defer></script>
 
-    .article-header {
-      margin-bottom: 70px;
-    }
-
-    .article-meta {
-      display: flex;
-      gap: 12px;
-      color: #737373;
-      font-size: 13px;
-      margin-bottom: 24px;
-    }
-
-    .article-page h1 {
-      margin: 0;
-      font-size: clamp(42px, 7vw, 68px);
-      line-height: 1.05;
-      letter-spacing: -0.05em;
-    }
-
-    .article-subtitle {
-      margin-top: 28px;
-      color: #737373;
-      font-size: 19px;
-      line-height: 1.7;
-    }
-
-    .article-body h2 {
-      margin-top: 64px;
-      margin-bottom: 20px;
-      font-size: 28px;
-      letter-spacing: -0.03em;
-    }
-
-    .article-body h3 {
-      margin-top: 40px;
-      font-size: 21px;
-    }
-
-    .article-body p {
-      margin: 20px 0;
-      font-size: 17px;
-      line-height: 1.8;
-    }
-
-    .article-body ul {
-      padding-left: 24px;
-    }
-
-    .article-body li {
-      margin: 10px 0;
-      font-size: 17px;
-      line-height: 1.7;
-    }
-
-    .article-body pre {
-      overflow-x: auto;
-      padding: 22px;
-      margin: 28px 0;
-      background: #f5f5f5;
-      border: 1px solid #e5e5e5;
-      border-radius: 6px;
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .article-body code {
-      font-family:
-        "SFMono-Regular",
-        Consolas,
-        "Liberation Mono",
-        monospace;
-    }
-
-    .article-body p code {
-      padding: 2px 5px;
-      background: #f5f5f5;
-      border-radius: 3px;
-      font-size: 0.9em;
-    }
-
-    .mental-model {
-      margin: 32px 0;
-      padding: 24px;
-      border-left: 3px solid #171717;
-      background: #fafafa;
-    }
-
-    .mental-model p {
-      margin: 0;
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-bottom: 60px;
-      color: #737373;
-      font-size: 14px;
-    }
-
-    .back-link:hover {
-      color: #000;
-    }
-
-    @media (max-width: 700px) {
-      .article-page {
-        width: min(calc(100% - 32px), 720px);
-        padding-top: 70px;
-      }
-
-      .article-body p,
-      .article-body li {
-        font-size: 16px;
-      }
-    }
-  </style>
 </head>
 
 
@@ -149,14 +31,18 @@
     <div class="container nav-container">
 
       <a href="/" class="logo">
-        Saisanjana
+        Sai Sanjana Kambalapally
       </a>
 
       <nav class="nav">
 
-        <a href="/">Home</a>
+        <a href="../index.html">
+          Home
+        </a>
 
-        <a href="/#articles">Articles</a>
+        <a href="../index.html#articles">
+          Articles
+        </a>
 
         <a
           href="https://github.com/saisanjana2410"
@@ -165,6 +51,15 @@
         >
           GitHub ↗
         </a>
+
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch theme"
+        >
+          <span class="theme-icon">☾</span>
+          <span class="theme-label">Dark</span>
+        </button>
 
       </nav>
 
@@ -175,7 +70,10 @@
 
   <main class="article-page">
 
-    <a href="/#articles" class="back-link">
+    <a
+      href="../index.html#articles"
+      class="back-link"
+    >
       ← Back to articles
     </a>
 
@@ -183,18 +81,26 @@
     <header class="article-header">
 
       <div class="article-meta">
-        <span>JavaScript</span>
+
+        <span class="category">
+          JavaScript
+        </span>
+
         <span>·</span>
-        <span>2026</span>
+
+        <span>August 2026</span>
+
       </div>
+
 
       <h1>
         Execution Context
       </h1>
 
+
       <p class="article-subtitle">
-        What does JavaScript actually need in order to run
-        a piece of code?
+        What does JavaScript actually need in order
+        to run our code?
       </p>
 
     </header>
@@ -202,255 +108,442 @@
 
     <article class="article-body">
 
-      <p>
-        When I first learned about execution contexts, the
-        explanation usually started with a definition:
-        "An execution context is the environment in which
-        JavaScript code is evaluated and executed."
-      </p>
 
       <p>
-        Technically, that's fine. But it didn't answer the
-        question I actually had:
+        When I first heard the term
+        <strong>execution context</strong>, the definition
+        sounded simple:
       </p>
 
-      <div class="mental-model">
-        <p>
-          <strong>
-            Why does JavaScript need an execution context
-            in the first place?
-          </strong>
-        </p>
+      <div class="callout">
+
+        <strong>
+          An execution context is the environment in which
+          JavaScript code is evaluated and executed.
+        </strong>
+
       </div>
 
       <p>
-        Let's start there.
+        Technically, that's correct. But it doesn't answer
+        the more interesting question:
       </p>
 
+      <div class="question">
 
-      <h2>JavaScript has to keep track of things</h2>
+        <strong>
+          What does JavaScript actually need to keep track
+          of while it runs our code?
+        </strong>
+
+      </div>
 
       <p>
-        Imagine JavaScript encounters this code:
+        Let's build the answer from there.
       </p>
 
-      <pre><code>const name = "Saisanjana";
+
+      <h2>
+        JavaScript has to keep track of things
+      </h2>
+
+
+      <p>
+        Consider this code:
+      </p>
+
+
+      <pre><code>const name = "Sai";
 
 function greet(person) {
-  const message = "Hello " + person;
+  const message = `Hello ${person}`;
   return message;
 }
 
 const result = greet(name);</code></pre>
 
+
       <p>
-        Before JavaScript can meaningfully execute this,
-        it needs somewhere to keep track of information.
+        JavaScript can't simply look at this as a list of
+        characters and start executing randomly.
       </p>
 
       <p>
-        It needs to know which variables exist, which
-        functions exist, what values those variables have,
-        and which code is currently being executed.
+        While the program is running, it has to keep track of
+        things like:
       </p>
+
+      <ul>
+
+        <li>Which variables exist?</li>
+
+        <li>Which values do those variables have?</li>
+
+        <li>Which functions exist?</li>
+
+        <li>What code is currently running?</li>
+
+        <li>What happens when a function is called?</li>
+
+        <li>Where should JavaScript look when a variable is referenced?</li>
+
+      </ul>
+
 
       <p>
-        The mechanism JavaScript uses to organize this
-        information while running code is what we call an
-        <strong>execution context</strong>.
+        An execution context is part of the machinery JavaScript
+        uses to organize this runtime information.
       </p>
 
 
-      <h2>The global context</h2>
+      <h2>
+        The Global Execution Context
+      </h2>
+
 
       <p>
-        When your JavaScript program starts, JavaScript
-        creates a global execution context.
+        When a JavaScript program begins, a
+        <strong>global execution context</strong> is created.
       </p>
 
+
       <p>
-        Think of it as the first environment in which
-        your program begins running.
+        For learning purposes, we can imagine it like this:
       </p>
+
 
       <pre><code>Global Execution Context
 
 name   → ...
-greet  → ...
+greet  → function
 result → ...</code></pre>
 
+
       <p>
-        The exact internal details are more complicated,
-        but this mental model is useful: JavaScript needs
-        an environment where the program's bindings can
-        live.
+        This isn't meant to be a literal diagram of the
+        engine's memory. It's a mental model for understanding
+        that JavaScript needs an environment in which the
+        global code can run.
       </p>
 
 
-      <h2>Then something interesting happens</h2>
+      <h2>
+        Memory Creation Phase
+      </h2>
+
 
       <p>
-        Our program eventually reaches:
+        Before JavaScript executes the statements normally,
+        it needs to prepare the environment.
       </p>
 
-      <pre><code>greet(name);</code></pre>
-
-      <p>
-        JavaScript now has a new problem.
-      </p>
 
       <p>
-        The function has its own variables:
+        In many beginner explanations, this is called the
+        <strong>Memory Creation Phase</strong> or
+        <strong>Creation Phase</strong>.
       </p>
+
+
+      <p>
+        A useful learning model is:
+      </p>
+
+
+      <pre class="diagram">Execution Context
+
+1. Memory Creation Phase
+          ↓
+2. Execution Phase</pre>
+
+
+      <p>
+        During the memory creation phase, JavaScript establishes
+        the bindings needed by the code.
+      </p>
+
+
+      <p>
+        This is one reason the behavior we call
+        <a href="hoisting-tdz.html">
+          hoisting
+        </a>
+        exists.
+      </p>
+
+
+      <h2>
+        Execution Phase
+      </h2>
+
+
+      <p>
+        After the environment has been prepared, JavaScript
+        starts executing the code.
+      </p>
+
+
+      <pre><code>const name = "Sai";
+
+console.log(name);</code></pre>
+
+
+      <p>
+        Conceptually:
+      </p>
+
+
+      <pre class="diagram">Memory Creation Phase
+        ↓
+name binding exists
+
+Execution Phase
+        ↓
+name = "Sai"
+
+console.log(name)</pre>
+
+
+      <p>
+        The distinction is useful because it explains why some
+        declarations appear to behave as if they exist before
+        the line where they are written.
+      </p>
+
+
+      <p>
+        The details differ between <code>var</code>,
+        <code>let</code>, <code>const</code>, and functions.
+        That's why I treat
+        <a href="hoisting-tdz.html">
+          Hoisting &amp; the Temporal Dead Zone
+        </a>
+        as a separate deep dive.
+      </p>
+
+
+      <h2>
+        What happens when a function is called?
+      </h2>
+
+
+      <p>
+        Now consider:
+      </p>
+
 
       <pre><code>function greet(person) {
-  const message = "Hello " + person;
+  const message = `Hello ${person}`;
   return message;
-}</code></pre>
+}
+
+greet("Sai");</code></pre>
+
 
       <p>
-        Where should <code>person</code> live?
-        Where should <code>message</code> live?
-        And how does JavaScript remember that it is
-        currently executing <code>greet</code>?
+        The function declaration itself is available in the
+        surrounding environment.
       </p>
+
 
       <p>
-        It creates another execution context for the
-        function.
+        When JavaScript reaches:
       </p>
 
-      <pre><code>Function Execution Context
 
-person  → "Saisanjana"
-message → ...</code></pre>
+      <pre><code>greet("Sai");</code></pre>
 
-
-      <h2>Now we need a stack</h2>
 
       <p>
-        There can be functions calling functions calling
-        functions.
+        it needs an execution context for this particular
+        function call.
       </p>
 
-      <pre><code>one()
-  ↓
-two()
-  ↓
-three()</code></pre>
+
+      <pre class="diagram">Global Execution Context
+          ↓
+       greet()
+          ↓
+Function Execution Context</pre>
+
 
       <p>
-        JavaScript needs to remember where it is.
-        That's where the <strong>call stack</strong>
-        becomes useful.
+        Inside that function call, JavaScript needs to deal
+        with the parameter <code>person</code> and the local
+        variable <code>message</code>.
       </p>
+
+
+      <pre><code>person  → "Sai"
+message → "Hello Sai"</code></pre>
+
 
       <p>
-        Conceptually, every time a function is called,
-        its execution context is placed on the stack.
+        If we call the function again:
       </p>
 
-      <pre><code>┌─────────────────┐
-│ three()         │
+
+      <pre><code>greet("Alice");
+greet("Bob");</code></pre>
+
+
+      <p>
+        each call has its own execution context and its own
+        parameter binding.
+      </p>
+
+
+      <h2>
+        The Call Stack
+      </h2>
+
+
+      <p>
+        Functions can call other functions.
+      </p>
+
+
+      <pre><code>function one() {
+  two();
+}
+
+function two() {
+  three();
+}
+
+function three() {
+  console.log("hello");
+}
+
+one();</code></pre>
+
+
+      <p>
+        When <code>one()</code> runs, it calls
+        <code>two()</code>. Then <code>two()</code> calls
+        <code>three()</code>.
+      </p>
+
+
+      <p>
+        JavaScript needs to remember where it currently is
+        and which function called which.
+      </p>
+
+
+      <p>
+        This is where the <strong>call stack</strong> comes in.
+      </p>
+
+
+      <pre class="diagram">┌─────────────────┐
+│ three()         │ ← currently running
 ├─────────────────┤
 │ two()           │
 ├─────────────────┤
 │ one()           │
 ├─────────────────┤
 │ Global          │
-└─────────────────┘</code></pre>
+└─────────────────┘</pre>
+
 
       <p>
-        When <code>three()</code> finishes, it is removed.
-        Then <code>two()</code> can continue.
-      </p>
-
-      <p>
-        This is why the call stack follows a
-        <strong>last-in, first-out</strong> structure.
+        The stack follows a
+        <strong>Last In, First Out</strong> model.
       </p>
 
 
-      <h2>But what happens before execution?</h2>
-
       <p>
-        This is where execution context connects directly
-        to something we already know: <strong>hoisting</strong>.
-      </p>
-
-      <p>
-        JavaScript doesn't simply start at line one and
-        blindly execute every statement.
-      </p>
-
-      <p>
-        Before execution begins, the environment has to be
-        prepared.
-      </p>
-
-      <p>
-        This is often taught as two phases:
-      </p>
-
-      <pre><code>1. Creation / setup
-2. Execution</code></pre>
-
-      <p>
-        During setup, JavaScript establishes the bindings
-        needed by the code.
+        When <code>three()</code> finishes, it is removed
+        from the top. Then <code>two()</code> continues.
       </p>
 
 
-      <h2>This explains var</h2>
+      <h2>
+        The Call Stack is not "the memory"
+      </h2>
 
-      <pre><code>console.log(x);
-
-var x = 10;</code></pre>
-
-      <p>
-        Conceptually, during setup:
-      </p>
-
-      <pre><code>x → undefined</code></pre>
 
       <p>
-        Then execution begins.
-      </p>
-
-      <p>
-        So when the first line runs, <code>x</code> already
-        exists and has the value <code>undefined</code>.
+        This distinction is worth making because these terms
+        are often mixed together.
       </p>
 
 
-      <h2>And this explains let</h2>
-
-      <pre><code>console.log(x);
-
-let x = 10;</code></pre>
-
       <p>
-        JavaScript still creates the binding for
-        <code>x</code>, but it doesn't initialize it to
-        <code>undefined</code>.
-      </p>
-
-      <p>
-        The binding exists, but accessing it before its
-        declaration is evaluated results in a
-        <code>ReferenceError</code>.
-      </p>
-
-      <p>
-        That's the Temporal Dead Zone.
+        The call stack is primarily about keeping track of
+        <strong>active function calls</strong>.
       </p>
 
 
-      <h2>Why this matters for closures</h2>
+      <p>
+        It isn't simply a giant box where every JavaScript
+        variable lives.
+      </p>
+
 
       <p>
-        Now we can connect execution contexts to closures.
+        The execution context contains runtime information,
+        while the call stack keeps track of which contexts
+        are currently active.
       </p>
+
+
+      <h2>
+        Where does JavaScript look for variables?
+      </h2>
+
+
+      <p>
+        Consider:
+      </p>
+
+
+      <pre><code>const x = 10;
+
+function test() {
+  console.log(x);
+}
+
+test();</code></pre>
+
+
+      <p>
+        When <code>test()</code> tries to resolve
+        <code>x</code>, JavaScript doesn't find a local
+        <code>x</code>.
+      </p>
+
+
+      <p>
+        It can then follow the function's lexical relationship
+        to its outer environment and find the outer binding.
+      </p>
+
+
+      <p>
+        This is where
+        <strong>lexical scope</strong> becomes important.
+      </p>
+
+
+      <p>
+        And that same mechanism is fundamental to
+        <a href="closures.html">
+          closures
+        </a>.
+      </p>
+
+
+      <h2>
+        Execution Context → Scope → Closures
+      </h2>
+
+
+      <p>
+        Consider:
+      </p>
+
 
       <pre><code>function createCounter() {
   let count = 0;
@@ -461,76 +554,77 @@ let x = 10;</code></pre>
   };
 }</code></pre>
 
-      <p>
-        When <code>createCounter()</code> runs, JavaScript
-        creates an execution context for that call.
-      </p>
 
       <p>
-        Inside that environment, <code>count</code> exists.
-      </p>
-
-      <pre><code>count → 0</code></pre>
-
-      <p>
-        The function returns another function which refers
-        to <code>count</code>.
-      </p>
-
-      <p>
-        Even after the execution of
-        <code>createCounter()</code> finishes, that returned
-        function still has access to the lexical environment
-        containing <code>count</code>.
-      </p>
-
-      <p>
-        That's the foundation of a closure.
+        During the call to <code>createCounter()</code>,
+        a local <code>count</code> binding is created.
       </p>
 
 
-      <h2>The mental model</h2>
-
       <p>
-        Instead of memorizing execution context as another
-        JavaScript definition, I find it much easier to think
-        about it as a chain of problems JavaScript has to solve:
+        The returned function refers to that binding.
       </p>
 
-      <pre><code>JavaScript needs to run code
-          ↓
-It needs an environment
-          ↓
-Execution context
-          ↓
-Functions create new contexts
-          ↓
-The call stack tracks those contexts
-          ↓
-The environment must be prepared
-          ↓
-Creation / setup
-          ↓
-Code begins running
-          ↓
-Execution
-          ↓
-Lexical environments determine
-where variables come from
-          ↓
-Closures can preserve access
-to those environments</code></pre>
 
       <p>
-        Once I started looking at execution contexts this way,
-        hoisting and closures stopped feeling like unrelated
-        JavaScript rules.
+        Even after <code>createCounter()</code> finishes,
+        the returned function can continue accessing the
+        lexical environment containing <code>count</code>.
       </p>
 
+
       <p>
-        They started looking like different pieces of the same
-        system.
+        That is the foundation of a
+        <a href="closures.html">
+          closure
+        </a>.
       </p>
+
+
+      <h2>
+        The mental model
+      </h2>
+
+
+      <pre class="diagram">JavaScript needs to run code
+            ↓
+It needs runtime information
+            ↓
+Execution Context
+            ↓
+Memory Creation Phase
+            ↓
+Bindings are prepared
+            ↓
+Execution Phase
+            ↓
+Code runs
+            ↓
+Function is called
+            ↓
+New execution context
+            ↓
+Call Stack tracks active calls
+            ↓
+Lexical environments help resolve names
+            ↓
+Closures can retain access
+to outer environments</pre>
+
+
+      <p>
+        Once I started looking at execution context as a solution
+        to a problem JavaScript has to solve, the surrounding
+        concepts became easier to connect.
+      </p>
+
+
+      <p>
+        Hoisting, the call stack, scope, and closures stop looking
+        like completely unrelated vocabulary. They become different
+        pieces of the larger picture of how JavaScript executes code.
+      </p>
+
 
     </article>
 
@@ -544,7 +638,7 @@ to those environments</code></pre>
     </p>
 
     <p>
-      © 2026 Saisanjana
+      © 2026 Sai Sanjana Kambalapally
     </p>
 
   </footer>

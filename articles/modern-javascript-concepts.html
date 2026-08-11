@@ -1,0 +1,982 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Understanding destructuring, spread, rest, template literals, optional chaining, and nullish coalescing in JavaScript."
+  >
+
+  <title>Modern JavaScript Concepts — Sai Sanjana Kambalapally</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <script src="../theme.js" defer></script>
+
+</head>
+
+
+<body>
+
+  <header class="site-header">
+
+    <div class="container nav-container">
+
+      <a href="/" class="logo">
+        Sai Sanjana Kambalapally
+      </a>
+
+      <nav class="nav">
+
+        <a href="../index.html">
+          Home
+        </a>
+
+        <a href="../index.html#articles">
+          Articles
+        </a>
+
+        <a
+          href="https://github.com/saisanjana2410"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub ↗
+        </a>
+
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch theme"
+        >
+          <span class="theme-icon">☾</span>
+          <span class="theme-label">Dark</span>
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <main class="article-page">
+
+    <a
+      href="../index.html#articles"
+      class="back-link"
+    >
+      ← Back to articles
+    </a>
+
+
+    <header class="article-header">
+
+      <div class="article-meta">
+
+        <span class="category">
+          JavaScript
+        </span>
+
+        <span>·</span>
+
+        <span>August 2026</span>
+
+      </div>
+
+
+      <h1>
+        Modern JavaScript Concepts
+      </h1>
+
+
+      <p class="article-subtitle">
+        What is JavaScript actually doing when we use these features?
+      </p>
+
+    </header>
+
+
+    <article class="article-body">
+
+
+      <p>
+        When I first came across features like
+        <strong>destructuring</strong>,
+        <strong>spread</strong>, and
+        <strong>rest</strong>, the syntax looked simple enough.
+      </p>
+
+      <p>
+        But there was one thing I wanted to understand:
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          What is JavaScript actually doing when we write these
+          three dots, brackets, and question marks?
+        </strong>
+
+      </div>
+
+
+      <p>
+        These features are often taught as syntax shortcuts.
+        And technically, they are useful shortcuts.
+      </p>
+
+      <p>
+        But understanding the idea behind them makes the syntax
+        much easier to remember.
+      </p>
+
+      <p>
+        So instead of memorizing six separate features, let's
+        build the mental model behind each one.
+      </p>
+
+
+      <h2>
+        Destructuring
+      </h2>
+
+
+      <p>
+        Consider an object:
+      </p>
+
+
+      <pre><code>const user = {
+  name: "Sai",
+  age: 24,
+  city: "Dallas"
+};</code></pre>
+
+
+      <p>
+        If we want the name and age, we could write:
+      </p>
+
+
+      <pre><code>const name = user.name;
+const age = user.age;</code></pre>
+
+
+      <p>
+        There is nothing wrong with this.
+      </p>
+
+      <p>
+        But JavaScript gives us another way:
+      </p>
+
+
+      <pre><code>const { name, age } = user;</code></pre>
+
+
+      <p>
+        This is called <strong>object destructuring</strong>.
+      </p>
+
+
+      <p>
+        Instead of accessing each property separately, we're
+        telling JavaScript which properties we want to create
+        variables from.
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          What is JavaScript matching when it sees this syntax?
+        </strong>
+
+      </div>
+
+
+      <p>
+        For objects, destructuring works by matching
+        <strong>property names</strong>.
+      </p>
+
+
+      <pre><code>const user = {
+  name: "Sai",
+  age: 24
+};
+
+const { name, age } = user;</code></pre>
+
+
+      <p>
+        Conceptually:
+      </p>
+
+
+      <pre class="diagram">user
+  ↓
+name → "Sai"
+age  → 24
+  ↓
+name variable
+age variable</pre>
+
+
+      <p>
+        We can also give the variable a different name:
+      </p>
+
+
+      <pre><code>const { name: userName } = user;</code></pre>
+
+
+      <p>
+        Here, <code>name</code> is the property we're looking for,
+        while <code>userName</code> is the variable we create.
+      </p>
+
+
+      <p>
+        Arrays work slightly differently.
+      </p>
+
+
+      <pre><code>const numbers = [10, 20, 30];
+
+const [first, second, third] = numbers;</code></pre>
+
+
+      <p>
+        With arrays, destructuring is based on
+        <strong>position</strong>.
+      </p>
+
+
+      <pre class="diagram">numbers
+
+[10, 20, 30]
+ ↓   ↓   ↓
+first second third</pre>
+
+
+      <p>
+        So objects are matched by property name, while arrays
+        are matched by position.
+      </p>
+
+
+      <h2>
+        Spread Operator
+      </h2>
+
+
+      <p>
+        Now consider an array:
+      </p>
+
+
+      <pre><code>const numbers = [1, 2, 3];</code></pre>
+
+
+      <p>
+        Suppose we want to create another array containing those
+        values.
+      </p>
+
+
+      <pre><code>const newNumbers = [...numbers];</code></pre>
+
+
+      <p>
+        The three dots are the <strong>spread operator</strong>.
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          What does "spread" actually mean here?
+        </strong>
+
+      </div>
+
+
+      <p>
+        The spread operator takes the elements of an iterable
+        and expands them into the surrounding structure.
+      </p>
+
+
+      <p>
+        Conceptually:
+      </p>
+
+
+      <pre class="diagram">numbers
+   ↓
+[1, 2, 3]
+
+...numbers
+   ↓
+1, 2, 3</pre>
+
+
+      <p>
+        So when we write:
+      </p>
+
+
+      <pre><code>const newNumbers = [...numbers];</code></pre>
+
+
+      <p>
+        it is as if the values of <code>numbers</code> are being
+        placed individually into the new array.
+      </p>
+
+
+      <p>
+        We can also add other values around them:
+      </p>
+
+
+      <pre><code>const newNumbers = [0, ...numbers, 4];</code></pre>
+
+
+      <p>
+        The result is:
+      </p>
+
+
+      <pre><code>[0, 1, 2, 3, 4]</code></pre>
+
+
+      <p>
+        Spread also works with objects.
+      </p>
+
+
+      <pre><code>const user = {
+  name: "Sai",
+  age: 24
+};
+
+const updatedUser = {
+  ...user,
+  city: "Dallas"
+};</code></pre>
+
+
+      <p>
+        The properties from <code>user</code> are spread into
+        the new object.
+      </p>
+
+
+      <pre class="diagram">user
+  ↓
+name → "Sai"
+age  → 24
+  ↓
+...user
+  ↓
+new object</pre>
+
+
+      <p>
+        One important detail is that if the same property appears
+        again later, the later value wins.
+      </p>
+
+
+      <pre><code>const updatedUser = {
+  ...user,
+  age: 25
+};</code></pre>
+
+
+      <p>
+        The final value of <code>age</code> is therefore
+        <code>25</code>.
+      </p>
+
+
+      <p>
+        This becomes especially useful when creating a new object
+        based on an existing one.
+      </p>
+
+
+      <h2>
+        Rest Operator
+      </h2>
+
+
+      <p>
+        Now we see the same three dots again:
+      </p>
+
+
+      <pre><code>const [first, ...remaining] = numbers;</code></pre>
+
+
+      <p>
+        But this time, the three dots are not spreading values.
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          If spread expands values, what is happening here?
+        </strong>
+
+      </div>
+
+
+      <p>
+        The <strong>rest operator</strong> collects the remaining
+        values into a single variable.
+      </p>
+
+
+      <pre><code>const numbers = [1, 2, 3, 4, 5];
+
+const [first, ...remaining] = numbers;</code></pre>
+
+
+      <p>
+        Now:
+      </p>
+
+
+      <pre class="diagram">numbers
+
+[1, 2, 3, 4, 5]
+ ↓
+first = 1
+
+remaining
+ ↓
+[2, 3, 4, 5]</pre>
+
+
+      <p>
+        This gives us a useful mental model:
+      </p>
+
+
+      <pre class="diagram">Spread → expands
+
+Rest → collects</pre>
+
+
+      <p>
+        The same <code>...</code> syntax is being used for two
+        different purposes depending on where it appears.
+      </p>
+
+
+      <p>
+        Rest is also useful in function parameters.
+      </p>
+
+
+      <pre><code>function add(...numbers) {
+  console.log(numbers);
+}
+
+add(10, 20, 30);</code></pre>
+
+
+      <p>
+        Inside the function, <code>numbers</code> becomes:
+      </p>
+
+
+      <pre><code>[10, 20, 30]</code></pre>
+
+
+      <p>
+        Instead of defining a fixed number of parameters, the rest
+        parameter collects the remaining arguments into an array.
+      </p>
+
+
+      <h2>
+        Template Literals
+      </h2>
+
+
+      <p>
+        Before template literals, combining text and variables
+        often meant using string concatenation.
+      </p>
+
+
+      <pre><code>const name = "Sai";
+
+const message = "Hello " + name;</code></pre>
+
+
+      <p>
+        JavaScript provides another way to write this:
+      </p>
+
+
+      <pre><code>const message = `Hello ${name}`;</code></pre>
+
+
+      <p>
+        This uses a <strong>template literal</strong>.
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          What makes `${...}` different from normal text?
+        </strong>
+
+      </div>
+
+
+      <p>
+        Anything inside <code>${...}</code> is evaluated as a
+        JavaScript expression.
+      </p>
+
+
+      <pre><code>const a = 10;
+const b = 20;
+
+const message = `The result is ${a + b}`;</code></pre>
+
+
+      <p>
+        The expression <code>a + b</code> is evaluated first,
+        and its result becomes part of the string.
+      </p>
+
+
+      <p>
+        Template literals also make multiline strings easier to
+        write because the line breaks can be included directly.
+      </p>
+
+
+      <pre><code>const message = `
+Hello
+How are you?
+Welcome!
+`;</code></pre>
+
+
+      <p>
+        So the useful mental model here is simple:
+      </p>
+
+
+      <pre class="diagram">Template literal
+      ↓
+String + JavaScript expressions</pre>
+
+
+      <h2>
+        Optional Chaining
+      </h2>
+
+
+      <p>
+        Now let's look at a different problem.
+      </p>
+
+
+      <p>
+        Suppose we have:
+      </p>
+
+
+      <pre><code>const user = {
+  profile: {
+    address: {
+      city: "Dallas"
+    }
+  }
+};</code></pre>
+
+
+      <p>
+        We can access the city with:
+      </p>
+
+
+      <pre><code>user.profile.address.city</code></pre>
+
+
+      <p>
+        But what happens if <code>profile</code> doesn't exist?
+      </p>
+
+
+      <pre><code>const user = {};
+
+user.profile.address.city;</code></pre>
+
+
+      <p>
+        JavaScript tries to access <code>address</code> from
+        <code>undefined</code>, which causes an error.
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          Can we ask JavaScript to continue only if the value exists?
+        </strong>
+
+      </div>
+
+
+      <p>
+        This is where <strong>optional chaining</strong> comes in.
+      </p>
+
+
+      <pre><code>user.profile?.address?.city</code></pre>
+
+
+      <p>
+        The <code>?.</code> tells JavaScript to stop and return
+        <code>undefined</code> if the value before it is
+        <code>null</code> or <code>undefined</code>.
+      </p>
+
+
+      <p>
+        Instead of thinking of it as a shortcut, I find it easier
+        to think of it as a safe way of continuing through a chain
+        of properties.
+      </p>
+
+
+      <pre class="diagram">user
+  ↓
+profile exists?
+  ↓
+yes → address
+  ↓
+address exists?
+  ↓
+yes → city</pre>
+
+
+      <p>
+        Optional chaining can also be used when calling a function
+        that may not exist.
+      </p>
+
+
+      <pre><code>user.login?.();</code></pre>
+
+
+      <p>
+        If <code>login</code> exists and is callable, it can be
+        called. Otherwise, JavaScript returns
+        <code>undefined</code> instead of throwing because the
+        property is missing.
+      </p>
+
+
+      <h2>
+        Nullish Coalescing
+      </h2>
+
+
+      <p>
+        Sometimes we don't just want to safely access a value.
+        We also want a fallback when the value is missing.
+      </p>
+
+
+      <p>
+        For example:
+      </p>
+
+
+      <pre><code>const username = null;
+
+const name = username ?? "Guest";</code></pre>
+
+
+      <p>
+        The result is:
+      </p>
+
+
+      <pre><code>"Guest"</code></pre>
+
+
+      <p>
+        The <strong>nullish coalescing operator</strong>,
+        <code>??</code>, uses the value on the right when the
+        value on the left is <code>null</code> or
+        <code>undefined</code>.
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          Why do we need `??` when JavaScript already has `||`?
+        </strong>
+
+      </div>
+
+
+      <p>
+        The important difference is what each operator considers
+        to be "missing."
+      </p>
+
+
+      <p>
+        The logical OR operator treats values such as
+        <code>0</code>, <code>false</code>, and an empty string
+        as falsy.
+      </p>
+
+
+      <pre><code>const count = 0;
+
+const result = count || 10;</code></pre>
+
+
+      <p>
+        Here, <code>result</code> becomes <code>10</code>.
+      </p>
+
+
+      <p>
+        But maybe <code>0</code> is a perfectly valid value.
+      </p>
+
+
+      <p>
+        With nullish coalescing:
+      </p>
+
+
+      <pre><code>const count = 0;
+
+const result = count ?? 10;</code></pre>
+
+
+      <p>
+        The result is:
+      </p>
+
+
+      <pre><code>0</code></pre>
+
+
+      <p>
+        That's because <code>??</code> only falls back for
+        <code>null</code> and <code>undefined</code>.
+      </p>
+
+
+      <h2>
+        Optional Chaining + Nullish Coalescing
+      </h2>
+
+
+      <p>
+        These two operators become especially useful when used
+        together.
+      </p>
+
+
+      <pre><code>const city =
+  user?.profile?.address?.city ?? "Unknown";</code></pre>
+
+
+      <p>
+        We can read this almost like a sentence:
+      </p>
+
+
+      <div class="callout">
+
+        <strong>
+          Try to get the city. If something along the way doesn't
+          exist, or the final value is null or undefined, use
+          "Unknown".
+        </strong>
+
+      </div>
+
+
+      <p>
+        Optional chaining answers:
+      </p>
+
+
+      <pre class="diagram">Can I safely continue?</pre>
+
+
+      <p>
+        Nullish coalescing answers:
+      </p>
+
+
+      <pre class="diagram">If the value is missing, what should I use instead?</pre>
+
+
+      <h2>
+        Putting the concepts together
+      </h2>
+
+
+      <p>
+        These features can look like unrelated pieces of syntax
+        when we first encounter them.
+      </p>
+
+
+      <p>
+        But they are all helping us work with data more clearly.
+      </p>
+
+
+      <pre><code>const user = {
+  name: "Sai",
+  profile: {
+    address: {
+      city: "Dallas"
+    }
+  }
+};
+
+const { name } = user;
+
+const updatedUser = {
+  ...user,
+  age: 24
+};
+
+const { profile, ...rest } = updatedUser;
+
+const message = `Hello ${name}`;
+
+const city =
+  user.profile?.address?.city ?? "Unknown";</code></pre>
+
+
+      <p>
+        Each feature is solving a different problem.
+      </p>
+
+
+      <pre class="diagram">Destructuring
+      ↓
+Take values out by structure
+
+Spread
+      ↓
+Expand values into a new structure
+
+Rest
+      ↓
+Collect remaining values
+
+Template literals
+      ↓
+Build strings using expressions
+
+Optional chaining
+      ↓
+Safely access possibly missing values
+
+Nullish coalescing
+      ↓
+Provide a fallback for null / undefined</pre>
+
+
+      <h2>
+        The mental model
+      </h2>
+
+
+      <pre class="diagram">JavaScript works with data
+          ↓
+We need to access values
+          ↓
+Destructuring helps us take values out
+          ↓
+Spread helps us expand values
+          ↓
+Rest helps us collect values
+          ↓
+Template literals help us build strings
+          ↓
+Optional chaining helps us safely access values
+          ↓
+Nullish coalescing gives us sensible fallbacks</pre>
+
+
+      <p>
+        What initially looks like a collection of small syntax
+        features starts to make more sense when we look at the
+        problems each one is trying to solve.
+      </p>
+
+
+      <p>
+        And this is where I think modern JavaScript becomes
+        interesting.
+      </p>
+
+
+      <p>
+        The syntax is only the surface. Understanding what problem
+        the language is solving underneath makes the syntax much
+        easier to remember.
+      </p>
+
+
+    </article>
+
+  </main>
+
+
+  <footer class="footer container">
+
+    <p>
+      Built while learning.
+    </p>
+
+    <p>
+      © 2026 Sai Sanjana Kambalapally
+    </p>
+
+  </footer>
+
+
+</body>
+
+</html>
+```

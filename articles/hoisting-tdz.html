@@ -485,115 +485,204 @@ access forbidden</pre>
       </p>
 
 
-      <h2>
-        So are let and const hoisted?
-      </h2>
+     <h2>
+  So are var, let, and const all hoisted?
+</h2>
 
-
-      <p>
-        This question causes a lot of confusion because the word
-        "hoisting" is used informally.
-      </p>
-
-
-      <p>
-        If by hoisting we mean:
-      </p>
-
-
-      <div class="callout">
-
-        <strong>
-          "The binding is established before execution reaches
-          the declaration."
-        </strong>
-
-      </div>
-
-
-      <p>
-        then it is reasonable to say that <code>let</code> and
-        <code>const</code> are hoisted.
-      </p>
-
-
-      <p>
-        But if we mean:
-      </p>
-
-
-      <pre><code>"I can access the variable before its declaration."</code></pre>
-
-
-      <p>
-        then no.
-      </p>
-
-
-      <p>
-        That's why this simplified rule is misleading:
-      </p>
-
-
-      <pre><code>var     → hoisted
-let     → not hoisted
-const   → not hoisted</code></pre>
-
-
-      <p>
-        A more useful model is:
-      </p>
-
-
-      <pre class="diagram">var
-→ binding exists
-→ initialized to undefined
-→ early access gives undefined
-
-
-let
-→ binding exists
-→ uninitialized
-→ TDZ
-→ early access gives ReferenceError
-
-
-const
-→ binding exists
-→ uninitialized
-→ TDZ
-→ early access gives ReferenceError
-→ must be initialized in declaration</pre>
-
-
-      <h2>
-        The bigger picture
-      </h2>
-
-
-      <p>
-        Hoisting isn't really a story about moving source code.
-        It is a useful shorthand for understanding what happens
-        when JavaScript prepares an execution environment.
-      </p>
-
-
-      <p>
-        That preparation is part of the larger model described in
-        <a href="execution-context.html">
-          Execution Context
-        </a>.
-      </p>
-
-
-      <p>
-        And once we understand that bindings belong to lexical
-        environments, we have the foundation for understanding
-        <a href="closures.html">
-          closures
-        </a>.
-      </p>
-
+    <p>
+      Yes — if by <strong>hoisting</strong> we mean that the
+      bindings are established during the environment setup
+      before the code is executed.
+    </p>
+    
+    <p>
+      The important difference is not whether the binding exists.
+      The important difference is <strong>what state that binding
+      is in before the declaration is reached</strong>.
+    </p>
+    
+    <pre class="diagram">var
+    → binding is created
+    → initialized to undefined
+    → early access is allowed
+    
+    
+    let
+    → binding is created
+    → not initialized yet
+    → early access is blocked by the TDZ
+    
+    
+    const
+    → binding is created
+    → not initialized yet
+    → early access is blocked by the TDZ</pre>
+    
+    <p>
+      So saying:
+    </p>
+    
+    <pre><code>var     → hoisted
+    let     → not hoisted
+    const   → not hoisted</code></pre>
+    
+    <p>
+      is a convenient beginner shortcut, but it is misleading if
+      we use "hoisted" to mean "the binding exists before execution
+      reaches the declaration."
+    </p>
+    
+    <div class="callout">
+    
+      <strong>
+        All three bindings are established before normal execution
+        reaches their declarations. What differs is their
+        initialization state.
+      </strong>
+    
+    </div>
+    
+    <h2>
+      The difference is initialization
+    </h2>
+    
+    <p>
+      Let's put them next to each other:
+    </p>
+    
+    <pre class="diagram">             Binding exists?     Initialized?
+    
+    var          Yes                 Yes → undefined
+    
+    let          Yes                 No  → TDZ
+    
+    const        Yes                 No  → TDZ</pre>
+    
+    <p>
+      This explains their different behavior.
+    </p>
+    
+    <p>
+      With <code>var</code>:
+    </p>
+    
+    <pre><code>console.log(a);
+    
+    var a = 10;</code></pre>
+    
+    <p>
+      the binding already exists and has been initialized to
+      <code>undefined</code>, so the result is:
+    </p>
+    
+    <pre><code>undefined</code></pre>
+    
+    <p>
+      With <code>let</code>:
+    </p>
+    
+    <pre><code>console.log(b);
+    
+    let b = 10;</code></pre>
+    
+    <p>
+      the binding exists, but it has not been initialized yet.
+      The access therefore happens inside the
+      <strong>Temporal Dead Zone</strong>, resulting in:
+    </p>
+    
+    <pre><code>ReferenceError</code></pre>
+    
+    <p>
+      The same basic initialization behavior applies to
+      <code>const</code>:
+    </p>
+    
+    <pre><code>console.log(c);
+    
+    const c = 10;</code></pre>
+    
+    <p>
+      Again, the binding exists but is still uninitialized, so
+      accessing it before the declaration is evaluated produces
+      a <code>ReferenceError</code>.
+    </p>
+    
+    <h2>
+      So what does "hoisting" really tell us?
+    </h2>
+    
+    <p>
+      The word <strong>hoisting</strong> by itself doesn't tell us
+      enough to predict what will happen.
+    </p>
+    
+    <p>
+      We also need to ask:
+    </p>
+    
+    <div class="question">
+    
+      <strong>
+        Has the binding been initialized yet, and if so, what is
+        its initial value?
+      </strong>
+    
+    </div>
+    
+    <p>
+      That's a much more useful question than simply asking whether
+      something is "hoisted."
+    </p>
+    
+    <p>
+      So instead of thinking:
+    </p>
+    
+    <pre><code>var is hoisted.
+    let is not hoisted.</code></pre>
+    
+    <p>
+      I find this mental model much more useful:
+    </p>
+    
+    <pre class="diagram">Before execution reaches the declaration:
+    
+    var
+      binding exists
+      ↓
+      initialized → undefined
+    
+    
+    let
+      binding exists
+      ↓
+      uninitialized
+      ↓
+      Temporal Dead Zone
+    
+    
+    const
+      binding exists
+      ↓
+      uninitialized
+      ↓
+      Temporal Dead Zone</pre>
+    
+    <p>
+      Once you think about hoisting in terms of
+      <strong>bindings and initialization</strong>, the behavior of
+      <code>var</code>, <code>let</code>, and <code>const</code> becomes
+      much easier to predict.
+    </p>
+    
+    <p>
+      This is part of the larger environment setup that happens when
+      JavaScript creates an
+      <a href="execution-context.html">
+        execution context
+      </a>.
+    </p>
 
     </article>
 

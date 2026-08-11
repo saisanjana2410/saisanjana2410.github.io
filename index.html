@@ -2,32 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <meta
     name="description"
-    content="Sai Sanjana's personal website — learning web development by understanding how things work under the hood."
+    content="Sai Sanjana Kambalapally — learning web development by understanding how things work under the hood."
   >
 
-  <title>Sai Sanjana Kambalapally — Web Developer</title>
+  <title>Sai Sanjana Kambalapally</title>
 
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js" defer></script>
 </head>
 
 <body>
 
-  <!-- Navigation -->
-
   <header class="site-header">
-
     <div class="container nav-container">
 
       <a href="/" class="logo">
-        Sai Sanjana
+        Sai Sanjana Kambalapally
       </a>
 
       <nav class="nav">
@@ -35,8 +29,6 @@
         <a href="#about">About</a>
 
         <a href="#articles">Articles</a>
-
-        <a href="#projects">Projects</a>
 
         <a
           href="https://github.com/saisanjana2410"
@@ -46,16 +38,24 @@
           GitHub ↗
         </a>
 
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch theme"
+        >
+          <span class="theme-icon">☾</span>
+          <span class="theme-label">Dark</span>
+        </button>
+
       </nav>
 
     </div>
-
   </header>
 
 
   <main>
 
-    <!-- Hero -->
+    <!-- HERO -->
 
     <section class="hero container">
 
@@ -76,6 +76,10 @@
 
       <div class="hero-links">
 
+        <a href="#articles">
+          Read my notes ↓
+        </a>
+
         <a
           href="https://github.com/saisanjana2410"
           target="_blank"
@@ -84,46 +88,37 @@
           GitHub ↗
         </a>
 
-        <a href="#articles">
-          Read my notes ↓
-        </a>
-
       </div>
 
     </section>
 
 
-    <!-- About -->
+    <!-- ABOUT -->
 
     <section id="about" class="section container">
 
       <div class="section-label">
-
         <span>01</span>
-
         <span>About</span>
-
       </div>
-
 
       <div class="section-content">
 
         <p>
-          I'm learning web development with a focus on
-          understanding the fundamentals rather than
-          memorizing rules.
+          I'm Sai Sanjana Kambalapally, learning web development
+          with a focus on understanding the fundamentals rather
+          than memorizing rules.
         </p>
 
         <p>
-          When I learn something, I like to understand
-          what problem it solves, why it works, and what
-          JavaScript or the browser is actually doing
-          underneath the abstraction.
+          When I learn something, I like to understand what problem
+          it solves, why it works, and what JavaScript is actually
+          doing underneath the abstraction.
         </p>
 
         <p>
-          This website is where I document those mental
-          models as I learn.
+          This website is where I document those mental models
+          as I learn.
         </p>
 
       </div>
@@ -131,18 +126,14 @@
     </section>
 
 
-    <!-- Articles -->
+    <!-- ARTICLES -->
 
     <section id="articles" class="section container">
 
       <div class="section-label">
-
         <span>02</span>
-
         <span>Articles</span>
-
       </div>
-
 
       <div class="section-content">
 
@@ -154,7 +145,7 @@
           <div>
 
             <p class="article-number">
-              01
+              01 · JavaScript
             </p>
 
             <h2>
@@ -162,8 +153,8 @@
             </h2>
 
             <p class="article-description">
-              Building a mental model of how JavaScript
-              actually executes code.
+              What does JavaScript actually need in order
+              to run our code?
             </p>
 
           </div>
@@ -183,16 +174,16 @@
           <div>
 
             <p class="article-number">
-              02
+              02 · JavaScript
             </p>
 
             <h2>
-              Hoisting & the Temporal Dead Zone
+              Hoisting &amp; the Temporal Dead Zone
             </h2>
 
             <p class="article-description">
-              Understanding what hoisting really means
-              and why let and const behave differently.
+              Why thinking of hoisting as "moving code"
+              creates more questions than answers.
             </p>
 
           </div>
@@ -212,7 +203,7 @@
           <div>
 
             <p class="article-number">
-              03
+              03 · JavaScript
             </p>
 
             <h2>
@@ -220,8 +211,8 @@
             </h2>
 
             <p class="article-description">
-              How functions remember their surrounding
-              lexical environment.
+              How can a function remember something after
+              the function that created it has finished?
             </p>
 
           </div>
@@ -237,102 +228,21 @@
     </section>
 
 
-    <!-- Projects -->
-
-    <section id="projects" class="section container">
-
-      <div class="section-label">
-
-        <span>03</span>
-
-        <span>Projects</span>
-
-      </div>
-
-
-      <div class="section-content">
-
-        <div class="project">
-
-          <div class="project-top">
-
-            <h2>
-              JavaScript Learning Projects
-            </h2>
-
-            <span>
-              2026
-            </span>
-
-          </div>
-
-          <p>
-            Small projects built while learning JavaScript,
-            focusing on understanding the language rather
-            than simply completing tutorials.
-          </p>
-
-          <div class="tags">
-
-            <span>JavaScript</span>
-
-            <span>HTML</span>
-
-            <span>CSS</span>
-
-          </div>
-
-        </div>
-
-
-        <div class="project">
-
-          <div class="project-top">
-
-            <h2>
-              More coming soon
-            </h2>
-
-            <span>
-              —
-            </span>
-
-          </div>
-
-          <p>
-            I'm learning, building, and documenting along
-            the way.
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- Currently Learning -->
+    <!-- CURRENTLY LEARNING -->
 
     <section class="section container">
 
       <div class="section-label">
-
-        <span>04</span>
-
+        <span>03</span>
         <span>Currently Learning</span>
-
       </div>
-
 
       <div class="section-content learning">
 
         <span>JavaScript</span>
-
         <span>Web Development</span>
-
-        <span>HTML & CSS</span>
-
-        <span>Git & GitHub</span>
+        <span>HTML &amp; CSS</span>
+        <span>Git &amp; GitHub</span>
 
       </div>
 
@@ -341,8 +251,6 @@
   </main>
 
 
-  <!-- Footer -->
-
   <footer class="footer container">
 
     <p>
@@ -350,7 +258,7 @@
     </p>
 
     <p>
-      © 2026 Saisanjana
+      © 2026 Sai Sanjana Kambalapally
     </p>
 
   </footer>

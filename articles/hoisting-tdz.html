@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Understanding variable hoisting, function hoisting, let, const, and the Temporal Dead Zone in JavaScript."
+  >
+
+  <title>Hoisting & TDZ — Sai Sanjana Kambalapally</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <script src="../theme.js" defer></script>
+
+</head>
+
+
+<body>
+
+  <header class="site-header">
+
+    <div class="container nav-container">
+
+      <a href="/" class="logo">
+        Sai Sanjana Kambalapally
+      </a>
+
+      <nav class="nav">
+
+        <a href="../index.html">
+          Home
+        </a>
+
+        <a href="../index.html#articles">
+          Articles
+        </a>
+
+        <a
+          href="https://github.com/saisanjana2410"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub ↗
+        </a>
+
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch theme"
+        >
+          <span class="theme-icon">☾</span>
+          <span class="theme-label">Dark</span>
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <main class="article-page">
+
+    <a
+      href="../index.html#articles"
+      class="back-link"
+    >
+      ← Back to articles
+    </a>
+
+
+    <header class="article-header">
+
+      <div class="article-meta">
+
+        <span class="category">
+          JavaScript
+        </span>
+
+        <span>·</span>
+
+        <span>August 2026</span>
+
+      </div>
+
+
+      <h1>
+        Hoisting &amp; the Temporal Dead Zone
+      </h1>
+
+
+      <p class="article-subtitle">
+        Stop imagining that JavaScript physically moves
+        declarations to the top.
+      </p>
+
+    </header>
+
+
+    <article class="article-body">
+
+
+      <p>
+        "JavaScript hoists variables."
+      </p>
+
+
+      <p>
+        That sentence is useful when you're starting out,
+        but it creates a strange mental picture.
+      </p>
+
+
+      <p>
+        It sounds like JavaScript takes this:
+      </p>
+
+
+      <pre><code>var x = 10;</code></pre>
+
+
+      <p>
+        and physically moves it to the top.
+      </p>
+
+
+      <div class="callout">
+
+        <strong>
+          A better mental model:
+        </strong>
+
+        <p>
+          JavaScript prepares bindings for a scope before
+          it begins executing the statements in that scope.
+        </p>
+
+      </div>
+
+
+      <p>
+        This is part of the environment setup described in
+        <a href="execution-context.html">
+          Execution Context
+        </a>.
+      </p>
+
+
+      <h2>
+        Variable Hoisting with var
+      </h2>
+
+
+      <p>
+        Consider:
+      </p>
+
+
+      <pre><code>console.log(x);
+
+var x = 10;</code></pre>
+
+
+      <p>
+        This prints:
+      </p>
+
+
+      <pre><code>undefined</code></pre>
+
+
+      <p>
+        A useful mental model is that during environment setup,
+        the <code>var</code> binding is created and initialized
+        to <code>undefined</code>.
+      </p>
+
+
+      <pre class="diagram">Memory Creation
+
+x → undefined
+
+
+Execution
+
+console.log(x)
+       ↓
+undefined
+
+x = 10</pre>
+
+
+      <p>
+        Notice that we don't actually need to imagine JavaScript
+        moving the source code.
+      </p>
+
+
+      <p>
+        The binding existed before the execution reached the
+        declaration.
+      </p>
+
+
+      <h2>
+        Function Hoisting
+      </h2>
+
+
+      <p>
+        Functions behave differently from <code>var</code>
+        variables.
+      </p>
+
+
+      <pre><code>greet();
+
+function greet() {
+  console.log("Hello");
+}</code></pre>
+
+
+      <p>
+        This works.
+      </p>
+
+
+      <p>
+        A useful mental model is that the function declaration
+        is available during the environment setup, including
+        its function value.
+      </p>
+
+
+      <pre class="diagram">Memory Creation
+
+greet → function
+
+
+Execution
+
+greet()
+  ↓
+"Hello"</pre>
+
+
+      <p>
+        Compare that with:
+      </p>
+
+
+      <pre><code>greet();
+
+var greet = function () {
+  console.log("Hello");
+};</code></pre>
+
+
+      <p>
+        This does not behave the same way.
+      </p>
+
+
+      <p>
+        The <code>var</code> binding exists, but during setup
+        it is initialized to <code>undefined</code>.
+      </p>
+
+
+      <pre><code>greet → undefined</code></pre>
+
+
+      <p>
+        Therefore trying to call <code>greet()</code> before
+        the assignment results in:
+      </p>
+
+
+      <pre><code>TypeError</code></pre>
+
+
+      <p>
+        This is an important distinction:
+      </p>
+
+
+      <pre class="diagram">Function declaration
+
+greet → actual function
+
+
+var + function expression
+
+greet → undefined
+        ↓
+later becomes a function</pre>
+
+
+      <h2>
+        What about let?
+      </h2>
+
+
+      <pre><code>console.log(x);
+
+let x = 10;</code></pre>
+
+
+      <p>
+        This produces:
+      </p>
+
+
+      <pre><code>ReferenceError</code></pre>
+
+
+      <p>
+        The interesting part is that <code>x</code> is not simply
+        nonexistent.
+      </p>
+
+
+      <p>
+        The binding has been established, but it hasn't been
+        initialized yet.
+      </p>
+
+
+      <pre class="diagram">x → uninitialized</pre>
+
+
+      <p>
+        Accessing that binding before initialization is not allowed.
+      </p>
+
+
+      <h2>
+        The Temporal Dead Zone
+      </h2>
+
+
+      <p>
+        The period between entering the scope and reaching the
+        <code>let</code> or <code>const</code> declaration is called
+        the <strong>Temporal Dead Zone</strong>.
+      </p>
+
+
+      <pre><code>let x = 10;</code></pre>
+
+
+      <p>
+        Conceptually:
+      </p>
+
+
+      <pre class="diagram">Enter scope
+    ↓
+x exists but is uninitialized
+    ↓
+──────── TDZ ────────
+    ↓
+let x = 10
+    ↓
+x becomes initialized
+    ↓
+normal access allowed</pre>
+
+
+      <p>
+        If we try to access <code>x</code> inside the TDZ,
+        JavaScript throws a <code>ReferenceError</code>.
+      </p>
+
+
+      <h2>
+        Why doesn't JavaScript just give us undefined?
+      </h2>
+
+
+      <p>
+        Compare:
+      </p>
+
+
+      <pre><code>console.log(a);
+
+var a = 10;</code></pre>
+
+
+      <p>
+        with:
+      </p>
+
+
+      <pre><code>console.log(b);
+
+let b = 10;</code></pre>
+
+
+      <p>
+        The first prints <code>undefined</code>.
+        The second throws a <code>ReferenceError</code>.
+      </p>
+
+
+      <p>
+        The difference comes from the initialization state
+        of the binding.
+      </p>
+
+
+      <pre class="diagram">var
+
+binding exists
+      ↓
+initialized to undefined
+      ↓
+access allowed
+
+
+let / const
+
+binding exists
+      ↓
+uninitialized
+      ↓
+TDZ
+      ↓
+access forbidden</pre>
+
+
+      <h2>
+        A tricky example
+      </h2>
+
+
+      <pre><code>var name = "Sai";
+
+{
+  console.log(name);
+
+  let name = "Sanjana";
+}</code></pre>
+
+
+      <p>
+        You might expect the outer <code>name</code> to be printed.
+      </p>
+
+
+      <p>
+        But this throws a <code>ReferenceError</code>.
+      </p>
+
+
+      <p>
+        Why?
+      </p>
+
+
+      <p>
+        Because the block has its own lexical binding for
+        <code>name</code>. That inner binding shadows the outer
+        one, and the inner binding is still inside its TDZ when
+        <code>console.log(name)</code> executes.
+      </p>
+
+
+      <p>
+        This is one reason understanding
+        <a href="closures.html">
+          lexical scope and closures
+        </a>
+        becomes useful.
+      </p>
+
+
+      <h2>
+        So are let and const hoisted?
+      </h2>
+
+
+      <p>
+        This question causes a lot of confusion because the word
+        "hoisting" is used informally.
+      </p>
+
+
+      <p>
+        If by hoisting we mean:
+      </p>
+
+
+      <div class="callout">
+
+        <strong>
+          "The binding is established before execution reaches
+          the declaration."
+        </strong>
+
+      </div>
+
+
+      <p>
+        then it is reasonable to say that <code>let</code> and
+        <code>const</code> are hoisted.
+      </p>
+
+
+      <p>
+        But if we mean:
+      </p>
+
+
+      <pre><code>"I can access the variable before its declaration."</code></pre>
+
+
+      <p>
+        then no.
+      </p>
+
+
+      <p>
+        That's why this simplified rule is misleading:
+      </p>
+
+
+      <pre><code>var     → hoisted
+let     → not hoisted
+const   → not hoisted</code></pre>
+
+
+      <p>
+        A more useful model is:
+      </p>
+
+
+      <pre class="diagram">var
+→ binding exists
+→ initialized to undefined
+→ early access gives undefined
+
+
+let
+→ binding exists
+→ uninitialized
+→ TDZ
+→ early access gives ReferenceError
+
+
+const
+→ binding exists
+→ uninitialized
+→ TDZ
+→ early access gives ReferenceError
+→ must be initialized in declaration</pre>
+
+
+      <h2>
+        The bigger picture
+      </h2>
+
+
+      <p>
+        Hoisting isn't really a story about moving source code.
+        It is a useful shorthand for understanding what happens
+        when JavaScript prepares an execution environment.
+      </p>
+
+
+      <p>
+        That preparation is part of the larger model described in
+        <a href="execution-context.html">
+          Execution Context
+        </a>.
+      </p>
+
+
+      <p>
+        And once we understand that bindings belong to lexical
+        environments, we have the foundation for understanding
+        <a href="closures.html">
+          closures
+        </a>.
+      </p>
+
+
+    </article>
+
+  </main>
+
+
+  <footer class="footer container">
+
+    <p>
+      Built while learning.
+    </p>
+
+    <p>
+      © 2026 Sai Sanjana Kambalapally
+    </p>
+
+  </footer>
+
+</body>
+
+</html>

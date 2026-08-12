@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,10 +22,73 @@
 
   <script src="../theme.js" defer></script>
 
+  <style>
+    /* --------------------------------
+       Article Visuals
+       -------------------------------- */
+
+    .article-visual {
+      margin: 3rem 0;
+      text-align: center;
+    }
+
+    .article-visual svg {
+      display: block;
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      margin: 0 auto;
+      color: inherit;
+    }
+
+    .article-visual svg text {
+      fill: currentColor;
+    }
+
+    .article-visual svg rect,
+    .article-visual svg line {
+      stroke: currentColor;
+    }
+
+    .article-visual figcaption {
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      opacity: 0.65;
+    }
+
+    /* --------------------------------
+       Diagram Blocks
+       -------------------------------- */
+
+    .diagram {
+      overflow-x: auto;
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+
+    /* --------------------------------
+       Callouts
+       -------------------------------- */
+
+    .callout {
+      margin: 2rem 0;
+      padding: 1.2rem 1.4rem;
+      border-left: 3px solid currentColor;
+    }
+
+    .question {
+      margin: 2rem 0;
+      padding: 1.2rem 1.4rem;
+      border-left: 3px solid currentColor;
+    }
+  </style>
+
 </head>
 
 
 <body>
+
+  <!-- HEADER -->
 
   <header class="site-header">
 
@@ -68,6 +132,8 @@
   </header>
 
 
+  <!-- MAIN -->
+
   <main class="article-page">
 
     <a
@@ -77,6 +143,8 @@
       ← Back to articles
     </a>
 
+
+    <!-- ARTICLE HEADER -->
 
     <header class="article-header">
 
@@ -88,7 +156,9 @@
 
         <span>·</span>
 
-        <span>August 2026</span>
+        <span>
+          August 2026
+        </span>
 
       </div>
 
@@ -106,8 +176,12 @@
     </header>
 
 
+    <!-- ARTICLE -->
+
     <article class="article-body">
 
+
+      <!-- INTRO -->
 
       <p>
         When I first encountered asynchronous JavaScript,
@@ -142,6 +216,8 @@
 
       </div>
 
+
+      <!-- SYNCHRONOUS VS ASYNCHRONOUS -->
 
       <h2>
         First: Synchronous vs Asynchronous
@@ -207,6 +283,8 @@ B</code></pre>
       </p>
 
 
+      <!-- VISUAL 1 -->
+
       <figure class="article-visual">
 
         <svg
@@ -228,7 +306,6 @@ B</code></pre>
             y1="88"
             x2="190"
             y2="88"
-            stroke="currentColor"
             stroke-width="2"
           />
 
@@ -241,7 +318,6 @@ B</code></pre>
             y1="88"
             x2="445"
             y2="88"
-            stroke="currentColor"
             stroke-width="2"
           />
 
@@ -254,7 +330,6 @@ B</code></pre>
             y1="88"
             x2="650"
             y2="88"
-            stroke="currentColor"
             stroke-width="2"
           />
 
@@ -268,12 +343,15 @@ B</code></pre>
 
         </svg>
 
+
         <figcaption>
           The timer schedules the callback; it does not pause JavaScript.
         </figcaption>
 
       </figure>
 
+
+      <!-- CALLBACK -->
 
       <h2>
         What is a Callback?
@@ -316,6 +394,8 @@ processUser(greet);</code></pre>
       </p>
 
 
+      <!-- VISUAL 2 -->
+
       <figure class="article-visual">
 
         <svg
@@ -331,7 +411,6 @@ processUser(greet);</code></pre>
             height="80"
             rx="12"
             fill="none"
-            stroke="currentColor"
             stroke-width="2"
           />
 
@@ -343,6 +422,7 @@ processUser(greet);</code></pre>
             greet()
           </text>
 
+
           <text
             x="305"
             y="115"
@@ -351,6 +431,7 @@ processUser(greet);</code></pre>
             →
           </text>
 
+
           <rect
             x="380"
             y="70"
@@ -358,7 +439,6 @@ processUser(greet);</code></pre>
             height="80"
             rx="12"
             fill="none"
-            stroke="currentColor"
             stroke-width="2"
           />
 
@@ -370,6 +450,7 @@ processUser(greet);</code></pre>
             processUser()
           </text>
 
+
           <text
             x="620"
             y="115"
@@ -377,6 +458,7 @@ processUser(greet);</code></pre>
           >
             →
           </text>
+
 
           <text
             x="655"
@@ -396,12 +478,15 @@ processUser(greet);</code></pre>
 
         </svg>
 
+
         <figcaption>
           A callback is a function passed to another function.
         </figcaption>
 
       </figure>
 
+
+      <!-- NOT ALL CALLBACKS ARE ASYNC -->
 
       <h2>
         Important: Not All Callbacks Are Asynchronous
@@ -474,6 +559,8 @@ Execution happens separately from
 the current synchronous flow</pre>
 
 
+      <!-- SET TIMEOUT -->
+
       <h2>
         setTimeout()
       </h2>
@@ -505,6 +592,8 @@ callback becomes eligible to run
      ↓
 callback executes when JavaScript can process it</pre>
 
+
+      <!-- EXACT TIMING -->
 
       <h2>
         The delay is not an exact execution time
@@ -557,6 +646,8 @@ callback executes when JavaScript can process it</pre>
       </p>
 
 
+      <!-- ZERO DELAY -->
+
       <h2>
         setTimeout(..., 0) does not mean "immediately"
       </h2>
@@ -602,6 +693,8 @@ B</code></pre>
         sense when we learn the JavaScript event loop.
       </p>
 
+
+      <!-- FUNCTION VS FUNCTION CALL -->
 
       <h2>
         Passing a function vs calling a function
@@ -669,6 +762,8 @@ call the function now</pre>
 }, 1000);</code></pre>
 
 
+      <!-- SET INTERVAL -->
+
       <h2>
         setInterval()
       </h2>
@@ -706,6 +801,8 @@ callback
 ...</pre>
 
 
+      <!-- CLEAR INTERVAL -->
+
       <h2>
         Stopping an interval
       </h2>
@@ -735,6 +832,8 @@ clearInterval(intervalId);</code></pre>
 
 clearTimeout(timeoutId);</code></pre>
 
+
+      <!-- INTERVAL TIMING -->
 
       <h2>
         setInterval() does not guarantee perfect timing either
@@ -773,6 +872,8 @@ clearTimeout(timeoutId);</code></pre>
         delayed depending on what JavaScript is doing.
       </p>
 
+
+      <!-- RETURN -->
 
       <h2>
         The Problem with Returning from an Async Callback
@@ -840,6 +941,8 @@ return belongs to callback</pre>
       </p>
 
 
+      <!-- CALLBACK HELL -->
+
       <h2>
         Callback Hell
       </h2>
@@ -896,6 +999,8 @@ Send notification</pre>
 });</code></pre>
 
 
+      <!-- VISUAL 3 -->
+
       <figure class="article-visual">
 
         <svg
@@ -904,9 +1009,14 @@ Send notification</pre>
           aria-label="Nested callbacks forming the pyramid of doom"
         >
 
-          <text x="40" y="40" font-size="22">
+          <text
+            x="40"
+            y="40"
+            font-size="22"
+          >
             Callback hell
           </text>
+
 
           <rect
             x="80"
@@ -915,13 +1025,17 @@ Send notification</pre>
             height="55"
             rx="10"
             fill="none"
-            stroke="currentColor"
             stroke-width="2"
           />
 
-          <text x="110" y="105" font-size="18">
+          <text
+            x="110"
+            y="105"
+            font-size="18"
+          >
             getUser(...)
           </text>
+
 
           <rect
             x="140"
@@ -930,13 +1044,17 @@ Send notification</pre>
             height="55"
             rx="10"
             fill="none"
-            stroke="currentColor"
             stroke-width="2"
           />
 
-          <text x="170" y="170" font-size="18">
+          <text
+            x="170"
+            y="170"
+            font-size="18"
+          >
             getPosts(...)
           </text>
+
 
           <rect
             x="200"
@@ -945,13 +1063,17 @@ Send notification</pre>
             height="55"
             rx="10"
             fill="none"
-            stroke="currentColor"
             stroke-width="2"
           />
 
-          <text x="230" y="235" font-size="18">
+          <text
+            x="230"
+            y="235"
+            font-size="18"
+          >
             getComments(...)
           </text>
+
 
           <rect
             x="260"
@@ -960,15 +1082,19 @@ Send notification</pre>
             height="55"
             rx="10"
             fill="none"
-            stroke="currentColor"
             stroke-width="2"
           />
 
-          <text x="290" y="300" font-size="18">
+          <text
+            x="290"
+            y="300"
+            font-size="18"
+          >
             save(...)
           </text>
 
         </svg>
+
 
         <figcaption>
           Deeply nested dependent callbacks are often called
@@ -977,6 +1103,8 @@ Send notification</pre>
 
       </figure>
 
+
+      <!-- ARE CALLBACKS BAD? -->
 
       <h2>
         Are callbacks bad?
@@ -1009,6 +1137,8 @@ Send notification</pre>
 
       </div>
 
+
+      <!-- MENTAL MODEL -->
 
       <h2>
         The Mental Model
@@ -1043,6 +1173,8 @@ Callback ≠ asynchronous
 Important:
 Timer delay ≠ exact execution time</pre>
 
+
+      <!-- NEXT -->
 
       <h2>
         What's Next?
@@ -1082,6 +1214,8 @@ Timer delay ≠ exact execution time</pre>
   </main>
 
 
+  <!-- FOOTER -->
+
   <footer class="footer container">
 
     <p>
@@ -1098,3 +1232,4 @@ Timer delay ≠ exact execution time</pre>
 </body>
 
 </html>
+```

@@ -44,6 +44,10 @@ html[data-theme="dark"] {
 }
 
 
+/* =========================
+   RESET
+========================= */
+
 * {
   box-sizing: border-box;
 }
@@ -109,8 +113,7 @@ button {
 
 /* =========================
    NAVIGATION
-   ========================= */
-
+========================= */
 
 .site-header {
   position: sticky;
@@ -217,8 +220,7 @@ button {
 
 /* =========================
    HERO
-   ========================= */
-
+========================= */
 
 .hero {
   padding-top: 140px;
@@ -310,8 +312,7 @@ button {
 
 /* =========================
    SECTIONS
-   ========================= */
-
+========================= */
 
 .section {
   display: grid;
@@ -364,8 +365,7 @@ button {
 
 /* =========================
    ARTICLE LIST
-   ========================= */
-
+========================= */
 
 .article {
   display: flex;
@@ -448,8 +448,7 @@ button {
 
 /* =========================
    LEARNING
-   ========================= */
-
+========================= */
 
 .learning {
   display: flex;
@@ -477,8 +476,7 @@ button {
 
 /* =========================
    ARTICLE PAGE
-   ========================= */
-
+========================= */
 
 .article-page {
   width: min(
@@ -565,8 +563,7 @@ button {
 
 /* =========================
    ARTICLE CONTENT
-   ========================= */
-
+========================= */
 
 .article-body h2 {
   margin-top: 68px;
@@ -634,7 +631,9 @@ button {
 }
 
 
-/* Code */
+/* =========================
+   CODE
+========================= */
 
 .article-body pre {
   overflow-x: auto;
@@ -679,8 +678,7 @@ button {
 
 /* =========================
    CALLOUTS
-   ========================= */
-
+========================= */
 
 .callout,
 .mental-model,
@@ -709,9 +707,8 @@ button {
 
 
 /* =========================
-   DIAGRAMS
-   ========================= */
-
+   TEXT DIAGRAMS
+========================= */
 
 .diagram {
   overflow-x: auto;
@@ -743,9 +740,87 @@ button {
 
 
 /* =========================
-   FOOTER
-   ========================= */
+   SVG ARTICLE VISUALS
+========================= */
 
+.article-visual {
+  width: 100%;
+
+  margin: 48px 0;
+
+  text-align: center;
+}
+
+
+.article-visual svg {
+  display: block;
+
+  width: 100%;
+
+  max-width: 800px;
+
+  height: auto;
+
+  margin: 0 auto;
+
+  /*
+    IMPORTANT:
+    Use the same text color as the article.
+    This automatically changes with light/dark mode.
+  */
+
+  color: var(--text);
+}
+
+
+/*
+  SVG text follows --text.
+*/
+
+.article-visual svg text {
+  fill: currentColor;
+}
+
+
+/*
+  SVG lines and boxes follow --text.
+*/
+
+.article-visual svg line,
+.article-visual svg rect {
+  stroke: currentColor;
+}
+
+
+/*
+  Keep SVG boxes transparent.
+*/
+
+.article-visual svg rect {
+  fill: none;
+}
+
+
+/*
+  Captions use the muted theme color.
+*/
+
+.article-visual figcaption {
+  max-width: 650px;
+
+  margin: 14px auto 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
 
 .footer {
   display: flex;
@@ -766,8 +841,7 @@ button {
 
 /* =========================
    MOBILE
-   ========================= */
-
+========================= */
 
 @media (max-width: 700px) {
 
@@ -879,6 +953,30 @@ button {
 
   .article-body h2 {
     font-size: 26px;
+  }
+
+
+  .article-body pre {
+    font-size: 13px;
+
+    padding: 18px;
+  }
+
+
+  .article-visual {
+    margin: 38px 0;
+  }
+
+
+  .article-visual svg {
+    max-width: 100%;
+  }
+
+
+  .article-visual figcaption {
+    font-size: 12px;
+
+    padding: 0 8px;
   }
 
 

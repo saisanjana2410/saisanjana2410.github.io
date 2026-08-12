@@ -1,0 +1,1102 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Understanding callbacks, setTimeout, setInterval, and callback hell in JavaScript."
+  >
+
+  <title>Async JavaScript Basics — Sai Sanjana Kambalapally</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <script src="../theme.js" defer></script>
+
+</head>
+
+
+<body>
+
+  <header class="site-header">
+
+    <div class="container nav-container">
+
+      <a href="/" class="logo">
+        Sai Sanjana Kambalapally
+      </a>
+
+      <nav class="nav">
+
+        <a href="../index.html">
+          Home
+        </a>
+
+        <a href="../index.html#articles">
+          Articles
+        </a>
+
+        <a
+          href="https://github.com/saisanjana2410"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub ↗
+        </a>
+
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch theme"
+        >
+          <span class="theme-icon">☾</span>
+          <span class="theme-label">Dark</span>
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <main class="article-page">
+
+    <a
+      href="../index.html#articles"
+      class="back-link"
+    >
+      ← Back to articles
+    </a>
+
+
+    <header class="article-header">
+
+      <div class="article-meta">
+
+        <span class="category">
+          JavaScript
+        </span>
+
+        <span>·</span>
+
+        <span>August 2026</span>
+
+      </div>
+
+
+      <h1>
+        Async JavaScript Basics
+      </h1>
+
+
+      <p class="article-subtitle">
+        Callbacks, timers, and why asynchronous JavaScript
+        can become difficult to reason about.
+      </p>
+
+    </header>
+
+
+    <article class="article-body">
+
+
+      <p>
+        When I first encountered asynchronous JavaScript,
+        the syntax itself wasn't particularly difficult.
+      </p>
+
+
+      <pre><code>setTimeout(() => {
+  console.log("Hello");
+}, 2000);</code></pre>
+
+
+      <p>
+        What was confusing was what JavaScript was actually
+        doing with that function.
+      </p>
+
+
+      <p>
+        Does JavaScript stop for two seconds?
+        Is the function running in the background?
+        And what exactly is a callback?
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          The important thing is to understand the mental model,
+          not just memorize the syntax.
+        </strong>
+
+      </div>
+
+
+      <h2>
+        First: Synchronous vs Asynchronous
+      </h2>
+
+
+      <p>
+        Consider ordinary JavaScript:
+      </p>
+
+
+      <pre><code>console.log("A");
+console.log("B");
+console.log("C");</code></pre>
+
+
+      <p>
+        The code executes in order:
+      </p>
+
+
+      <pre class="diagram">A → B → C</pre>
+
+
+      <p>
+        Each statement runs before the next one.
+      </p>
+
+
+      <p>
+        But now consider:
+      </p>
+
+
+      <pre><code>console.log("A");
+
+setTimeout(() => {
+  console.log("B");
+}, 2000);
+
+console.log("C");</code></pre>
+
+
+      <p>
+        The output is:
+      </p>
+
+
+      <pre><code>A
+C
+B</code></pre>
+
+
+      <p>
+        Why?
+      </p>
+
+
+      <p>
+        Because <code>setTimeout()</code> schedules the callback
+        to run later. It does not stop the rest of the JavaScript
+        from executing.
+      </p>
+
+
+      <figure class="article-visual">
+
+        <svg
+          viewBox="0 0 800 220"
+          role="img"
+          aria-label="setTimeout schedules a callback while synchronous code continues"
+        >
+
+          <text x="40" y="40" font-size="22">
+            JavaScript execution
+          </text>
+
+          <text x="40" y="95" font-size="18">
+            A
+          </text>
+
+          <line
+            x1="65"
+            y1="88"
+            x2="190"
+            y2="88"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+
+          <text x="210" y="95" font-size="18">
+            schedule B
+          </text>
+
+          <line
+            x1="320"
+            y1="88"
+            x2="445"
+            y2="88"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+
+          <text x="465" y="95" font-size="18">
+            C
+          </text>
+
+          <line
+            x1="520"
+            y1="88"
+            x2="650"
+            y2="88"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+
+          <text x="675" y="95" font-size="18">
+            B
+          </text>
+
+          <text x="210" y="145" font-size="15">
+            callback runs later
+          </text>
+
+        </svg>
+
+        <figcaption>
+          The timer schedules the callback; it does not pause JavaScript.
+        </figcaption>
+
+      </figure>
+
+
+      <h2>
+        What is a Callback?
+      </h2>
+
+
+      <p>
+        A callback is simply a function passed to another function
+        so that the other function can call it.
+      </p>
+
+
+      <pre><code>function greet(name) {
+  console.log(`Hello ${name}`);
+}
+
+function processUser(callback) {
+  callback("Sanjana");
+}
+
+processUser(greet);</code></pre>
+
+
+      <p>
+        Here, <code>greet</code> is passed into
+        <code>processUser()</code>.
+      </p>
+
+
+      <p>
+        Inside <code>processUser()</code>:
+      </p>
+
+
+      <pre><code>callback("Sanjana");</code></pre>
+
+
+      <p>
+        calls the function.
+      </p>
+
+
+      <figure class="article-visual">
+
+        <svg
+          viewBox="0 0 800 230"
+          role="img"
+          aria-label="A callback is a function passed to another function"
+        >
+
+          <rect
+            x="60"
+            y="70"
+            width="190"
+            height="80"
+            rx="12"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+
+          <text
+            x="105"
+            y="118"
+            font-size="20"
+          >
+            greet()
+          </text>
+
+          <text
+            x="305"
+            y="115"
+            font-size="28"
+          >
+            →
+          </text>
+
+          <rect
+            x="380"
+            y="70"
+            width="220"
+            height="80"
+            rx="12"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+
+          <text
+            x="425"
+            y="118"
+            font-size="20"
+          >
+            processUser()
+          </text>
+
+          <text
+            x="620"
+            y="115"
+            font-size="28"
+          >
+            →
+          </text>
+
+          <text
+            x="655"
+            y="95"
+            font-size="17"
+          >
+            callback()
+          </text>
+
+          <text
+            x="655"
+            y="125"
+            font-size="14"
+          >
+            called here
+          </text>
+
+        </svg>
+
+        <figcaption>
+          A callback is a function passed to another function.
+        </figcaption>
+
+      </figure>
+
+
+      <h2>
+        Important: Not All Callbacks Are Asynchronous
+      </h2>
+
+
+      <p>
+        This is one of the easiest things to misunderstand.
+      </p>
+
+
+      <p>
+        A callback does <strong>not</strong> automatically mean
+        asynchronous.
+      </p>
+
+
+      <pre><code>function processUser(callback) {
+  callback();
+}
+
+console.log("A");
+
+processUser(() => {
+  console.log("B");
+});
+
+console.log("C");</code></pre>
+
+
+      <p>
+        This prints:
+      </p>
+
+
+      <pre><code>A
+B
+C</code></pre>
+
+
+      <p>
+        The callback runs immediately.
+      </p>
+
+
+      <div class="callout">
+
+        <strong>
+          Callback describes how a function is passed.
+          Asynchronous describes how execution is scheduled.
+        </strong>
+
+      </div>
+
+
+      <p>
+        These are two different concepts.
+      </p>
+
+
+      <pre class="diagram">Callback
+   ↓
+A function passed to another function
+
+        ≠
+
+Asynchronous
+   ↓
+Execution happens separately from
+the current synchronous flow</pre>
+
+
+      <h2>
+        setTimeout()
+      </h2>
+
+
+      <p>
+        <code>setTimeout()</code> schedules a callback to run
+        after a specified delay.
+      </p>
+
+
+      <pre><code>setTimeout(() => {
+  console.log("Hello");
+}, 2000);</code></pre>
+
+
+      <p>
+        Conceptually:
+      </p>
+
+
+      <pre class="diagram">setTimeout()
+     ↓
+schedule callback
+     ↓
+wait until delay has elapsed
+     ↓
+callback becomes eligible to run
+     ↓
+callback executes when JavaScript can process it</pre>
+
+
+      <h2>
+        The delay is not an exact execution time
+      </h2>
+
+
+      <p>
+        This is another common misconception.
+      </p>
+
+
+      <pre><code>setTimeout(() => {
+  console.log("Done");
+}, 1000);</code></pre>
+
+
+      <p>
+        It is tempting to read this as:
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          "Run this exactly one second from now."
+        </strong>
+
+      </div>
+
+
+      <p>
+        A better mental model is:
+      </p>
+
+
+      <div class="callout">
+
+        <strong>
+          The callback will not run before the timer's delay has
+          elapsed, but it may run later depending on what JavaScript
+          is doing.
+        </strong>
+
+      </div>
+
+
+      <p>
+        The timer is a scheduling mechanism, not a guarantee of
+        exact execution time.
+      </p>
+
+
+      <h2>
+        setTimeout(..., 0) does not mean "immediately"
+      </h2>
+
+
+      <pre><code>console.log("A");
+
+setTimeout(() => {
+  console.log("B");
+}, 0);
+
+console.log("C");</code></pre>
+
+
+      <p>
+        The output is:
+      </p>
+
+
+      <pre><code>A
+C
+B</code></pre>
+
+
+      <p>
+        Even with a delay of <code>0</code>, the callback is still
+        scheduled to run later.
+      </p>
+
+
+      <div class="callout">
+
+        <strong>
+          Zero milliseconds means "don't wait for a timer delay",
+          not "execute right now."
+        </strong>
+
+      </div>
+
+
+      <p>
+        Understanding exactly why this happens will make much more
+        sense when we learn the JavaScript event loop.
+      </p>
+
+
+      <h2>
+        Passing a function vs calling a function
+      </h2>
+
+
+      <p>
+        This tiny difference causes a surprisingly large number
+        of mistakes.
+      </p>
+
+
+      <p>
+        Suppose:
+      </p>
+
+
+      <pre><code>function doSomething() {
+  console.log("Hello");
+}</code></pre>
+
+
+      <p>
+        This:
+      </p>
+
+
+      <pre><code>setTimeout(doSomething, 1000);</code></pre>
+
+
+      <p>
+        passes the function to <code>setTimeout()</code>.
+      </p>
+
+
+      <p>
+        But this:
+      </p>
+
+
+      <pre><code>setTimeout(doSomething(), 1000);</code></pre>
+
+
+      <p>
+        calls <code>doSomething()</code> immediately.
+      </p>
+
+
+      <pre class="diagram">doSomething
+     ↓
+pass the function
+
+doSomething()
+     ↓
+call the function now</pre>
+
+
+      <p>
+        If we need arguments, we can use an arrow function:
+      </p>
+
+
+      <pre><code>setTimeout(() => {
+  doSomething("Sanjana");
+}, 1000);</code></pre>
+
+
+      <h2>
+        setInterval()
+      </h2>
+
+
+      <p>
+        <code>setInterval()</code> is similar to
+        <code>setTimeout()</code>, but instead of scheduling the
+        callback once, it repeatedly schedules it.
+      </p>
+
+
+      <pre><code>setInterval(() => {
+  console.log("Hello");
+}, 2000);</code></pre>
+
+
+      <p>
+        Conceptually:
+      </p>
+
+
+      <pre class="diagram">2 seconds
+    ↓
+callback
+    ↓
+2 seconds
+    ↓
+callback
+    ↓
+2 seconds
+    ↓
+callback
+    ↓
+...</pre>
+
+
+      <h2>
+        Stopping an interval
+      </h2>
+
+
+      <p>
+        <code>setInterval()</code> continues running until it is
+        cancelled.
+      </p>
+
+
+      <pre><code>const intervalId = setInterval(() => {
+  console.log("Hello");
+}, 1000);
+
+clearInterval(intervalId);</code></pre>
+
+
+      <p>
+        The same idea applies to <code>setTimeout()</code>:
+      </p>
+
+
+      <pre><code>const timeoutId = setTimeout(() => {
+  console.log("Hello");
+}, 5000);
+
+clearTimeout(timeoutId);</code></pre>
+
+
+      <h2>
+        setInterval() does not guarantee perfect timing either
+      </h2>
+
+
+      <p>
+        It is tempting to think:
+      </p>
+
+
+      <pre><code>setInterval(doSomething, 1000);</code></pre>
+
+
+      <p>
+        means:
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          "Run doSomething() exactly every 1000 milliseconds."
+        </strong>
+
+      </div>
+
+
+      <p>
+        That's not a safe mental model.
+      </p>
+
+
+      <p>
+        Just like <code>setTimeout()</code>, the callback can be
+        delayed depending on what JavaScript is doing.
+      </p>
+
+
+      <h2>
+        The Problem with Returning from an Async Callback
+      </h2>
+
+
+      <p>
+        Another common mistake is assuming that returning from a
+        callback returns a value from the outer function.
+      </p>
+
+
+      <pre><code>function getData() {
+
+  setTimeout(() => {
+    return "data";
+  }, 1000);
+
+}
+
+const data = getData();</code></pre>
+
+
+      <p>
+        It is tempting to think that <code>data</code> will eventually
+        become <code>"data"</code>.
+      </p>
+
+
+      <p>
+        It doesn't.
+      </p>
+
+
+      <p>
+        The <code>return</code> belongs to the callback function.
+        It does not return from <code>getData()</code>.
+      </p>
+
+
+      <pre class="diagram">getData()
+   ↓
+setTimeout()
+   ↓
+callback created
+   ↓
+getData() finishes
+   ↓
+later...
+   ↓
+callback runs
+   ↓
+return belongs to callback</pre>
+
+
+      <p>
+        This is one of the reasons asynchronous results cannot simply
+        be treated like normal synchronous return values.
+      </p>
+
+
+      <p>
+        This problem eventually leads us toward
+        <strong>Promises</strong>.
+      </p>
+
+
+      <h2>
+        Callback Hell
+      </h2>
+
+
+      <p>
+        Callbacks become difficult when asynchronous operations depend
+        on one another.
+      </p>
+
+
+      <p>
+        Imagine:
+      </p>
+
+
+      <pre class="diagram">Get user
+   ↓
+Get user's posts
+   ↓
+Get comments
+   ↓
+Save comments
+   ↓
+Send notification</pre>
+
+
+      <p>
+        If every operation expects a callback, the code can become
+        deeply nested:
+      </p>
+
+
+      <pre><code>getUser(user => {
+
+  getPosts(user, posts => {
+
+    getComments(posts, comments => {
+
+      saveComments(comments, result => {
+
+        sendNotification(result, notification => {
+
+          console.log("Everything finished");
+
+        });
+
+      });
+
+    });
+
+  });
+
+});</code></pre>
+
+
+      <figure class="article-visual">
+
+        <svg
+          viewBox="0 0 800 360"
+          role="img"
+          aria-label="Nested callbacks forming the pyramid of doom"
+        >
+
+          <text x="40" y="40" font-size="22">
+            Callback hell
+          </text>
+
+          <rect
+            x="80"
+            y="70"
+            width="620"
+            height="55"
+            rx="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+
+          <text x="110" y="105" font-size="18">
+            getUser(...)
+          </text>
+
+          <rect
+            x="140"
+            y="135"
+            width="500"
+            height="55"
+            rx="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+
+          <text x="170" y="170" font-size="18">
+            getPosts(...)
+          </text>
+
+          <rect
+            x="200"
+            y="200"
+            width="380"
+            height="55"
+            rx="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+
+          <text x="230" y="235" font-size="18">
+            getComments(...)
+          </text>
+
+          <rect
+            x="260"
+            y="265"
+            width="260"
+            height="55"
+            rx="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+
+          <text x="290" y="300" font-size="18">
+            save(...)
+          </text>
+
+        </svg>
+
+        <figcaption>
+          Deeply nested dependent callbacks are often called
+          "callback hell" or the "pyramid of doom."
+        </figcaption>
+
+      </figure>
+
+
+      <h2>
+        Are callbacks bad?
+      </h2>
+
+
+      <p>
+        No.
+      </p>
+
+
+      <p>
+        Callbacks are useful and are still used throughout JavaScript.
+      </p>
+
+
+      <p>
+        The problem is not callbacks themselves.
+        The problem is excessive nesting and dependency between
+        asynchronous operations.
+      </p>
+
+
+      <div class="callout">
+
+        <strong>
+          Callback hell is a problem of structure and readability,
+          not proof that callbacks are inherently bad.
+        </strong>
+
+      </div>
+
+
+      <h2>
+        The Mental Model
+      </h2>
+
+
+      <pre class="diagram">Callback
+   ↓
+A function passed to another function
+
+
+setTimeout
+   ↓
+Schedule a callback to run later
+
+
+setInterval
+   ↓
+Schedule a callback repeatedly
+
+
+Callback hell
+   ↓
+Too many dependent callbacks
+nested inside one another
+
+
+Important:
+Callback ≠ asynchronous
+
+
+Important:
+Timer delay ≠ exact execution time</pre>
+
+
+      <h2>
+        What's Next?
+      </h2>
+
+
+      <p>
+        There is still a deeper question:
+      </p>
+
+
+      <div class="question">
+
+        <strong>
+          If JavaScript is executing one thing at a time,
+          how do these callbacks actually get to run later?
+        </strong>
+
+      </div>
+
+
+      <p>
+        That's where the
+        <strong>call stack, Web APIs, task queue, and event loop</strong>
+        come in.
+      </p>
+
+
+      <p>
+        And understanding those concepts will make the behavior of
+        <code>setTimeout()</code> much less mysterious.
+      </p>
+
+
+    </article>
+
+  </main>
+
+
+  <footer class="footer container">
+
+    <p>
+      Built while learning.
+    </p>
+
+    <p>
+      © 2026 Sai Sanjana Kambalapally
+    </p>
+
+  </footer>
+
+
+</body>
+
+</html>
+```

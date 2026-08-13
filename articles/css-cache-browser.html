@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Why my CSS wasn't broken — my browser was showing me an older cached version."
+  >
+
+  <title>
+    My CSS Wasn't Broken — My Browser Was Showing Me an Old Version
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="../style.css"
+  >
+
+  <script
+    src="../theme.js"
+    defer
+  ></script>
+
+</head>
+
+
+<body>
+
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
+
+  <header class="site-header">
+
+    <div class="container nav-container">
+
+      <a
+        href="../"
+        class="logo"
+      >
+        Sai Sanjana Kambalapally
+      </a>
+
+
+      <nav class="nav">
+
+        <a href="../">
+          Home
+        </a>
+
+        <a href="../blog/">
+          Blog
+        </a>
+
+        <a
+          href="https://github.com/saisanjana2410"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub ↗
+        </a>
+
+
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch theme"
+        >
+
+          <span class="theme-icon">
+            ☾
+          </span>
+
+          <span class="theme-label">
+            Dark
+          </span>
+
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =========================
+       ARTICLE
+  ========================== -->
+
+  <main class="article-page">
+
+
+    <a
+      href="../blog/"
+      class="back-link"
+    >
+      ← Back to blog
+    </a>
+
+
+
+    <!-- =========================
+         ARTICLE HEADER
+    ========================== -->
+
+    <header class="article-header">
+
+      <div class="article-meta">
+
+        <span class="category">
+          Web Development
+        </span>
+
+        <span>
+          ·
+        </span>
+
+        <span>
+          Browser
+        </span>
+
+      </div>
+
+
+      <h1>
+        My CSS Wasn't Broken —
+        My Browser Was Showing Me an Old Version
+      </h1>
+
+
+      <p class="article-subtitle">
+        I changed my CSS, GitHub Pages was serving the new file,
+        but my website still looked old. The problem turned out
+        to be something I wasn't thinking about: browser caching.
+      </p>
+
+    </header>
+
+
+
+    <!-- =========================
+         ARTICLE CONTENT
+    ========================== -->
+
+    <article class="article-body">
+
+
+      <h2>
+        What I Expected
+      </h2>
+
+
+      <p>
+        I was making some changes to my blog.
+      </p>
+
+
+      <p>
+        I changed my homepage, created a separate blog page,
+        changed the navigation, and updated the CSS.
+      </p>
+
+
+      <p>
+        Everything looked correct in my files.
+      </p>
+
+
+      <p>
+        But when I opened the website...
+      </p>
+
+
+      <div class="question">
+
+        <p>
+          <strong>
+            The new styling wasn't there.
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        At first, I assumed something was wrong with my CSS.
+      </p>
+
+
+
+      <h2>
+        My Project Structure
+      </h2>
+
+
+      <p>
+        My project structure looked like this:
+      </p>
+
+
+      <div class="diagram">
+my-site/
+│
+├── index.html
+├── style.css
+├── theme.js
+│
+├── blog/
+│   └── index.html
+│
+└── articles/
+    └── ...
+      </div>
+
+
+      <p>
+        My homepage contained:
+      </p>
+
+
+      <pre><code>&lt;link rel="stylesheet" href="style.css"&gt;</code></pre>
+
+
+      <p>
+        And my blog page contained:
+      </p>
+
+
+      <pre><code>&lt;link rel="stylesheet" href="../style.css"&gt;</code></pre>
+
+
+      <p>
+        Those paths looked correct.
+      </p>
+
+
+      <p>
+        So I thought:
+      </p>
+
+
+      <div class="question">
+
+        <p>
+          "Why isn't the CSS working?"
+        </p>
+
+      </div>
+
+
+
+      <h2>
+        First Assumption: The CSS File Isn't Being Served
+      </h2>
+
+
+      <p>
+        I opened the stylesheet directly in the browser:
+      </p>
+
+
+      <pre><code>https://saisanjana2410.github.io/style.css</code></pre>
+
+
+      <p>
+        And the CSS appeared.
+      </p>
+
+
+      <p>
+        So the stylesheet existed.
+      </p>
+
+
+      <p>
+        GitHub Pages was serving it.
+      </p>
+
+
+      <p>
+        That ruled out one of my assumptions.
+      </p>
+
+
+
+      <h2>
+        Then I Started Questioning the HTML
+      </h2>
+
+
+      <p>
+        I checked the homepage:
+      </p>
+
+
+      <pre><code>&lt;link
+  rel="stylesheet"
+  href="style.css"
+&gt;</code></pre>
+
+
+      <p>
+        The <code>index.html</code> and
+        <code>style.css</code> were in the same directory.
+      </p>
+
+
+      <p>
+        That should resolve to:
+      </p>
+
+
+      <div class="diagram">
+/index.html
+/style.css
+      </div>
+
+
+      <p>
+        For the blog:
+      </p>
+
+
+      <div class="diagram">
+/blog/index.html
+      </div>
+
+
+      <p>
+        the correct path was:
+      </p>
+
+
+      <pre><code>&lt;link
+  rel="stylesheet"
+  href="../style.css"
+&gt;</code></pre>
+
+
+      <p>
+        because <code>..</code> means:
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            Go up one directory.
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        So the paths were correct too.
+      </p>
+
+
+
+      <h2>
+        Then Something Strange Happened
+      </h2>
+
+
+      <p>
+        I opened:
+      </p>
+
+
+      <pre><code>https://saisanjana2410.github.io/?v=2</code></pre>
+
+
+      <p>
+        And suddenly...
+      </p>
+
+
+      <div class="callout">
+
+        <p>
+          <strong>
+            The new CSS appeared.
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        Nothing else had changed.
+      </p>
+
+
+      <p>
+        The CSS file was the same.
+      </p>
+
+
+      <p>
+        The HTML was the same.
+      </p>
+
+
+      <p>
+        The server was the same.
+      </p>
+
+
+      <p>
+        So why did adding
+        <code>?v=2</code>
+        change anything?
+      </p>
+
+
+
+      <h2>
+        The Missing Piece: Browser Cache
+      </h2>
+
+
+      <p>
+        The browser doesn't necessarily download every resource
+        from the server every time we visit a website.
+      </p>
+
+
+      <p>
+        It can store previously downloaded resources locally.
+      </p>
+
+
+      <p>
+        For example:
+      </p>
+
+
+      <div class="diagram">
+First visit
+
+Browser
+   ↓
+Request style.css
+   ↓
+Server
+   ↓
+CSS
+   ↓
+Browser stores it
+      </div>
+
+
+      <p>
+        Later:
+      </p>
+
+
+      <div class="diagram">
+Visit again
+
+Browser
+   ↓
+"Do I already have this?"
+   ↓
+Cached CSS
+      </div>
+
+
+      <p>
+        This is useful because downloading the same files repeatedly
+        would be wasteful.
+      </p>
+
+
+      <p>
+        But it can create a confusing situation while developing
+        a website.
+      </p>
+
+
+
+      <h2>
+        The Problem I Ran Into
+      </h2>
+
+
+      <p>
+        I had effectively changed:
+      </p>
+
+
+      <pre><code>style.css</code></pre>
+
+
+      <p>
+        from version 1 to version 2.
+      </p>
+
+
+      <p>
+        But the browser was still using the cached version.
+      </p>
+
+
+      <p>
+        So from my perspective:
+      </p>
+
+
+      <div class="diagram">
+Server:
+    style.css → NEW
+
+Browser:
+    style.css → OLD
+      </div>
+
+
+      <p>
+        That's why the website looked wrong even though
+        the file itself was correct.
+      </p>
+
+
+
+      <h2>
+        Why Did <code>?v=2</code> Work?
+      </h2>
+
+
+      <p>
+        This was the part I initially found confusing.
+      </p>
+
+
+      <p>
+        I had:
+      </p>
+
+
+      <pre><code>&lt;link
+  rel="stylesheet"
+  href="style.css"
+&gt;</code></pre>
+
+
+      <p>
+        Then I changed it to:
+      </p>
+
+
+      <pre><code>&lt;link
+  rel="stylesheet"
+  href="style.css?v=2"
+&gt;</code></pre>
+
+
+      <p>
+        The actual CSS file is still:
+      </p>
+
+
+      <pre><code>style.css</code></pre>
+
+
+      <p>
+        But the browser now sees the resource as:
+      </p>
+
+
+      <pre><code>style.css?v=2</code></pre>
+
+
+      <p>
+        That's a different URL.
+      </p>
+
+
+      <p>
+        So the browser can no longer simply use the cached resource
+        associated with:
+      </p>
+
+
+      <pre><code>style.css</code></pre>
+
+
+      <p>
+        It requests the new URL.
+      </p>
+
+
+      <div class="diagram">
+style.css
+     ↓
+old cached resource
+
+
+style.css?v=2
+     ↓
+new resource request
+      </div>
+
+
+      <p>
+        And suddenly the new CSS appeared.
+      </p>
+
+
+
+      <h2>
+        This Is Called Cache Busting
+      </h2>
+
+
+      <p>
+        The technique is commonly called
+        <strong>cache busting</strong>.
+      </p>
+
+
+      <p>
+        The basic idea is:
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            Change the URL when the underlying resource changes
+            so the browser knows it should fetch a new version.
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        For example:
+      </p>
+
+
+      <pre><code>&lt;link
+  rel="stylesheet"
+  href="style.css?v=2"
+&gt;</code></pre>
+
+
+      <p>
+        Later:
+      </p>
+
+
+      <pre><code>&lt;link
+  rel="stylesheet"
+  href="style.css?v=3"
+&gt;</code></pre>
+
+
+      <p>
+        Or the same idea can be used with JavaScript:
+      </p>
+
+
+      <pre><code>&lt;script src="theme.js?v=2"&gt;&lt;/script&gt;</code></pre>
+
+
+
+      <h2>
+        But Does <code>?v=2</code> Mean the Server Has a Different File?
+      </h2>
+
+
+      <p>
+        No.
+      </p>
+
+
+      <p>
+        These:
+      </p>
+
+
+      <pre><code>style.css</code></pre>
+
+
+      <p>
+        and:
+      </p>
+
+
+      <pre><code>style.css?v=2</code></pre>
+
+
+      <p>
+        still point to the same underlying file:
+      </p>
+
+
+      <pre><code>style.css</code></pre>
+
+
+      <p>
+        The <code>?v=2</code> is a
+        <strong>query parameter</strong>.
+      </p>
+
+
+      <p>
+        Query parameters can be used for many purposes.
+        In this case, we're mainly using one to make the
+        resource URL different.
+      </p>
+
+
+
+      <h2>
+        Another Way: Hard Refresh
+      </h2>
+
+
+      <p>
+        I also learned that I don't necessarily need to
+        change the URL.
+      </p>
+
+
+      <p>
+        I can tell the browser to reload resources instead.
+      </p>
+
+
+      <p>
+        In Chrome on Windows:
+      </p>
+
+
+      <pre><code>Ctrl + Shift + R</code></pre>
+
+
+      <p>
+        or:
+      </p>
+
+
+      <pre><code>Ctrl + F5</code></pre>
+
+
+      <p>
+        This performs a stronger refresh than a normal reload.
+      </p>
+
+
+      <p>
+        So during development, if my page looks like it's showing
+        an old version, one of the first things I can try is:
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            Hard refresh
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        before assuming my code is broken.
+      </p>
+
+
+
+      <h2>
+        So What Actually Happened?
+      </h2>
+
+
+      <p>
+        My debugging process eventually looked like this:
+      </p>
+
+
+      <div class="diagram">
+CSS doesn't appear to update
+        ↓
+Is style.css being served?
+        ↓
+YES
+        ↓
+Is the HTML pointing to the correct file?
+        ↓
+YES
+        ↓
+Is the browser showing an older version?
+        ↓
+YES
+        ↓
+Hard refresh / cache bust
+        ↓
+New CSS appears
+      </div>
+
+
+      <p>
+        The important part was that
+        <strong>the CSS wasn't actually broken</strong>.
+      </p>
+
+
+      <p>
+        My mental model was.
+      </p>
+
+
+
+      <h2>
+        What I Was Initially Thinking
+      </h2>
+
+
+      <div class="diagram">
+CSS doesn't work
+      ↓
+Something is wrong with CSS
+      </div>
+
+
+      <p>
+        But a better debugging model is:
+      </p>
+
+
+      <div class="diagram">
+CSS doesn't appear
+      ↓
+Is the file there?
+      ↓
+Is the path correct?
+      ↓
+Is the browser requesting it?
+      ↓
+Is it getting the latest version?
+      ↓
+Is the CSS being applied?
+      </div>
+
+
+      <p>
+        This is much more useful because it lets me isolate
+        the problem instead of immediately changing code.
+      </p>
+
+
+
+      <h2>
+        The Mental Model I Want to Remember
+      </h2>
+
+
+      <p>
+        When a website doesn't reflect a change I've just made,
+        I shouldn't immediately assume:
+      </p>
+
+
+      <div class="question">
+
+        <p>
+          <strong>
+            "My code is wrong."
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        There are several layers involved:
+      </p>
+
+
+      <div class="diagram">
+My files
+   ↓
+GitHub repository
+   ↓
+GitHub Pages deployment
+   ↓
+HTTP request
+   ↓
+Browser cache
+   ↓
+CSS/JS gets applied
+   ↓
+What I see on screen
+      </div>
+
+
+      <p>
+        A problem can occur at any of these layers.
+      </p>
+
+
+      <p>
+        In my case, the files were correct and the stylesheet
+        was being served.
+      </p>
+
+
+      <p>
+        The browser was simply giving me an older cached version.
+      </p>
+
+
+
+      <h2>
+        What I Want to Remember
+      </h2>
+
+
+      <p>
+        If I change CSS or JavaScript and don't see the change:
+      </p>
+
+
+      <h3>
+        First
+      </h3>
+
+
+      <p>
+        Check whether the file is actually being served.
+      </p>
+
+
+      <h3>
+        Then
+      </h3>
+
+
+      <p>
+        Check whether the HTML references the correct path.
+      </p>
+
+
+      <h3>
+        Then
+      </h3>
+
+
+      <p>
+        Try a hard refresh:
+      </p>
+
+
+      <pre><code>Ctrl + Shift + R</code></pre>
+
+
+      <h3>
+        And if necessary
+      </h3>
+
+
+      <p>
+        Use cache busting:
+      </p>
+
+
+      <pre><code>&lt;link
+  rel="stylesheet"
+  href="style.css?v=2"
+&gt;</code></pre>
+
+
+      <p>
+        The important lesson isn't:
+      </p>
+
+
+      <div class="question">
+
+        <p>
+          "Always add <code>?v=2</code>."
+        </p>
+
+      </div>
+
+
+      <p>
+        It's:
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            The code I wrote and the code my browser is
+            currently using are not always the same thing.
+          </strong>
+        </p>
+
+      </div>
+
+
+    </article>
+
+  </main>
+
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer class="footer container">
+
+    <p>
+      Built while learning.
+    </p>
+
+
+    <p>
+      © 2026 Sai Sanjana Kambalapally
+    </p>
+
+  </footer>
+
+
+</body>
+
+</html>

@@ -1,34 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <meta
     name="description"
     content="Sai Sanjana Kambalapally — learning web development by understanding how things work under the hood."
   >
 
-  <title>Sai Sanjana Kambalapally</title>
+  <title>
+    Sai Sanjana Kambalapally
+  </title>
 
-  <link rel="stylesheet" href="style.css">
-  <script src="theme.js" defer></script>
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <script
+    src="theme.js"
+    defer
+  ></script>
+
 </head>
+
 
 <body>
 
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
+
   <header class="site-header">
+
     <div class="container nav-container">
 
-      <a href="/" class="logo">
+      <a
+        href="/"
+        class="logo"
+      >
         Sai Sanjana Kambalapally
       </a>
 
+
       <nav class="nav">
 
-        <a href="#about">About</a>
+        <a href="#about">
+          About
+        </a>
 
-        <a href="#articles">Articles</a>
+        <a href="blog/">
+          Blog
+        </a>
 
         <a
           href="https://github.com/saisanjana2410"
@@ -38,24 +68,37 @@
           GitHub ↗
         </a>
 
+
         <button
           class="theme-toggle"
           type="button"
           aria-label="Switch theme"
         >
-          <span class="theme-icon">☾</span>
-          <span class="theme-label">Dark</span>
+
+          <span class="theme-icon">
+            ☾
+          </span>
+
+          <span class="theme-label">
+            Dark
+          </span>
+
         </button>
 
       </nav>
 
     </div>
+
   </header>
+
 
 
   <main>
 
-    <!-- HERO -->
+
+    <!-- =========================
+         HERO
+    ========================== -->
 
     <section class="hero container">
 
@@ -63,10 +106,12 @@
         Web Development
       </p>
 
+
       <h1>
         Learning how things
         <span>work under the hood.</span>
       </h1>
+
 
       <p class="hero-description">
         I'm learning web development by trying to understand
@@ -74,11 +119,13 @@
         not just memorizing how to use them.
       </p>
 
+
       <div class="hero-links">
 
-        <a href="#articles">
+        <a href="blog/">
           Read my notes ↓
         </a>
+
 
         <a
           href="https://github.com/saisanjana2410"
@@ -93,14 +140,28 @@
     </section>
 
 
-    <!-- ABOUT -->
 
-    <section id="about" class="section container">
+    <!-- =========================
+         ABOUT
+    ========================== -->
+
+    <section
+      id="about"
+      class="section container"
+    >
 
       <div class="section-label">
-        <span>01</span>
-        <span>About</span>
+
+        <span>
+          01
+        </span>
+
+        <span>
+          About
+        </span>
+
       </div>
+
 
       <div class="section-content">
 
@@ -110,11 +171,13 @@
           than memorizing rules.
         </p>
 
+
         <p>
           When I learn something, I like to understand what problem
           it solves, why it works, and what JavaScript is actually
           doing underneath the abstraction.
         </p>
+
 
         <p>
           This website is where I document those mental models
@@ -126,205 +189,43 @@
     </section>
 
 
-    <!-- ARTICLES -->
 
-    <section id="articles" class="section container">
-
-      <div class="section-label">
-        <span>02</span>
-        <span>Articles</span>
-      </div>
-
-      <div class="section-content">
-
-        <a
-          href="articles/execution-context.html"
-          class="article"
-        >
-
-          <div>
-
-            <p class="article-number">
-              01 · JavaScript
-            </p>
-
-            <h2>
-              Execution Context
-            </h2>
-
-            <p class="article-description">
-              What does JavaScript actually need in order
-              to run our code?
-            </p>
-
-          </div>
-
-          <span class="article-arrow">
-            ↗
-          </span>
-
-        </a>
-
-
-        <a
-          href="articles/hoisting-tdz.html"
-          class="article"
-        >
-
-          <div>
-
-            <p class="article-number">
-              02 · JavaScript
-            </p>
-
-            <h2>
-              Hoisting &amp; the Temporal Dead Zone
-            </h2>
-
-            <p class="article-description">
-              Why thinking of hoisting as "moving code"
-              creates more questions than answers.
-            </p>
-
-          </div>
-
-          <span class="article-arrow">
-            ↗
-          </span>
-
-        </a>
-
-
-        <a
-          href="articles/closures.html"
-          class="article"
-        >
-
-          <div>
-
-            <p class="article-number">
-              03 · JavaScript
-            </p>
-
-            <h2>
-              Closures
-            </h2>
-
-            <p class="article-description">
-              How can a function remember something after
-              the function that created it has finished?
-            </p>
-
-          </div>
-
-          <span class="article-arrow">
-            ↗
-          </span>
-
-        </a>
-        <a
-          href="articles/modern-javascript-concepts.html"
-          class="article"
-        >
-
-          <div>
-
-            <p class="article-number">
-              04 · JavaScript
-            </p>
-
-            <h2>
-              Modern Javascript Concepts
-            </h2>
-
-            <p class="article-description">
-              What is JavaScript actually doing when we use
-      destructuring, spread, rest, template literals,
-      optional chaining, and nullish coalescing?
-            </p>
-
-          </div>
-
-          <span class="article-arrow">
-            ↗
-          </span>
-
-        </a>
-        <a
-          href="articles/classes.html"
-          class="article"
-        >
-        
-          <div>
-        
-            <p class="article-number">
-              05 · JavaScript
-            </p>
-        
-            <h2>
-              Classes in JavaScript
-            </h2>
-        
-            <p class="article-description">
-              What is JavaScript actually doing when we create
-              objects with classes?
-            </p>
-        
-          </div>
-        
-          <span class="article-arrow">
-            ↗
-          </span>
-        
-        </a>
-        <a
-          href="articles/async-javascript-basics.html"
-          class="article"
-        >
-        
-          <div>
-        
-            <p class="article-number">
-              06 · JavaScript
-            </p>
-        
-            <h2>
-              Async JavaScript Basics
-            </h2>
-        
-            <p class="article-description">
-              Callbacks, timers, and the misconceptions that make
-              asynchronous JavaScript confusing.
-            </p>
-        
-          </div>
-        
-          <span class="article-arrow">
-            ↗
-          </span>
-        
-        </a>
-
-      </div>
-
-    </section>
-
-
-    <!-- CURRENTLY LEARNING -->
+    <!-- =========================
+         CURRENTLY LEARNING
+    ========================== -->
 
     <section class="section container">
 
       <div class="section-label">
-        <span>03</span>
-        <span>Currently Learning</span>
+
+        <span>
+          02
+        </span>
+
+        <span>
+          Currently Learning
+        </span>
+
       </div>
+
 
       <div class="section-content learning">
 
-        <span>JavaScript</span>
-        <span>Web Development</span>
-        <span>HTML &amp; CSS</span>
-        <span>Git &amp; GitHub</span>
+        <span>
+          JavaScript
+        </span>
+
+        <span>
+          Web Development
+        </span>
+
+        <span>
+          HTML &amp; CSS
+        </span>
+
+        <span>
+          Git &amp; GitHub
+        </span>
 
       </div>
 
@@ -333,11 +234,17 @@
   </main>
 
 
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
   <footer class="footer container">
 
     <p>
       Built while learning.
     </p>
+
 
     <p>
       © 2026 Sai Sanjana Kambalapally
@@ -345,5 +252,7 @@
 
   </footer>
 
+
 </body>
+
 </html>

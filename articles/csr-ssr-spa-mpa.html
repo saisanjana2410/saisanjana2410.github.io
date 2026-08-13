@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="My mental model for understanding CSR, SSR, SPA, and MPA — and the confusion I had when I first encountered them."
+  >
+
+  <title>
+    CSR vs SSR vs SPA vs MPA — Sai Sanjana Kambalapally
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="../style.css"
+  >
+
+  <script
+    src="../theme.js"
+    defer
+  ></script>
+
+</head>
+
+
+<body>
+
+  <header class="site-header">
+
+    <div class="container nav-container">
+
+      <a
+        href="../index.html"
+        class="logo"
+      >
+        Sai Sanjana Kambalapally
+      </a>
+
+
+      <nav class="nav">
+
+        <a href="../index.html#about">
+          About
+        </a>
+
+        <a href="../index.html#articles">
+          Articles
+        </a>
+
+        <a
+          href="https://github.com/saisanjana2410"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub ↗
+        </a>
+
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch theme"
+        >
+
+          <span class="theme-icon">
+            ☾
+          </span>
+
+          <span class="theme-label">
+            Dark
+          </span>
+
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <main class="article-page">
+
+    <a
+      href="../index.html#articles"
+      class="back-link"
+    >
+      ← Back to articles
+    </a>
+
+
+    <!-- ARTICLE HEADER -->
+
+    <header class="article-header">
+
+      <div class="article-meta">
+
+        <span class="category">
+          Web Development
+        </span>
+
+        <span>
+          ·
+        </span>
+
+        <span>
+          Mental Models
+        </span>
+
+      </div>
+
+
+      <h1>
+        CSR vs SSR vs SPA vs MPA —
+        The Confusion I Had
+      </h1>
+
+
+      <p class="article-subtitle">
+        I initially thought these four terms were
+        different names for the same architectural idea.
+        The distinction became much clearer once I separated
+        rendering from navigation.
+      </p>
+
+    </header>
+
+
+    <!-- ARTICLE CONTENT -->
+
+    <article class="article-body">
+
+
+      <h2>
+        What I Thought Initially
+      </h2>
+
+
+      <p>
+        When I first heard these terms:
+      </p>
+
+
+      <ul>
+
+        <li>
+          <strong>CSR</strong> — Client-Side Rendering
+        </li>
+
+        <li>
+          <strong>SSR</strong> — Server-Side Rendering
+        </li>
+
+        <li>
+          <strong>SPA</strong> — Single Page Application
+        </li>
+
+        <li>
+          <strong>MPA</strong> — Multi Page Application
+        </li>
+
+      </ul>
+
+
+      <p>
+        I thought they were basically different names
+        for the same architectural idea.
+      </p>
+
+
+      <p>
+        My initial mental model was something like:
+      </p>
+
+
+      <div class="diagram">
+React → CSR → SPA
+Traditional website → SSR → MPA
+      </div>
+
+
+      <p>
+        It looked simple.
+      </p>
+
+
+      <p>
+        It was also wrong.
+      </p>
+
+
+      <p>
+        The problem was that I was mixing
+        <strong>two completely different questions</strong>
+        together.
+      </p>
+
+
+
+      <h2>
+        The First Question: Where Is the HTML Generated?
+      </h2>
+
+
+      <p>
+        This is what <strong>CSR vs SSR</strong> is about.
+      </p>
+
+
+
+      <h3>
+        SSR — Server-Side Rendering
+      </h3>
+
+
+      <p>
+        With SSR, the server generates the HTML.
+      </p>
+
+
+      <div class="diagram">
+Browser
+   │
+   │ request
+   ↓
+Server
+   │
+   │ generates HTML
+   ↓
+Browser
+   │
+   ↓
+Displays HTML
+      </div>
+
+
+      <p>
+        For example, the server might send:
+      </p>
+
+
+      <pre><code>&lt;h1&gt;Hello Sanjana&lt;/h1&gt;</code></pre>
+
+
+      <p>
+        The browser didn't create that
+        <code>&lt;h1&gt;</code>.
+      </p>
+
+
+      <p>
+        The server did.
+      </p>
+
+
+      <p>
+        That's <strong>Server-Side Rendering</strong>.
+      </p>
+
+
+
+      <h3>
+        CSR — Client-Side Rendering
+      </h3>
+
+
+      <p>
+        With CSR, the client/browser generates the UI
+        using JavaScript.
+      </p>
+
+
+      <p>
+        The server might initially send:
+      </p>
+
+
+      <pre><code>&lt;div id="root"&gt;&lt;/div&gt;</code></pre>
+
+
+      <p>
+        along with JavaScript.
+      </p>
+
+
+      <p>
+        Then the browser runs:
+      </p>
+
+
+      <pre><code>const root = document.querySelector("#root");
+
+root.innerHTML = "&lt;h1&gt;Hello Sanjana&lt;/h1&gt;";</code></pre>
+
+
+      <p>
+        Now the browser created the
+        <code>&lt;h1&gt;</code>.
+      </p>
+
+
+      <p>
+        That's <strong>Client-Side Rendering</strong>.
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            Where is the HTML/UI generated?
+          </strong>
+          <br><br>
+
+          Server → SSR
+          <br>
+
+          Browser → CSR
+        </p>
+
+      </div>
+
+
+
+      <h2>
+        Then I Thought SSR Was Only About the Landing Page
+      </h2>
+
+
+      <p>
+        This was another misunderstanding.
+      </p>
+
+
+      <p>
+        I initially thought:
+      </p>
+
+
+      <div class="question">
+
+        <p>
+          "When we're talking about CSR vs SSR,
+          are we mainly talking about the landing page?"
+        </p>
+
+      </div>
+
+
+      <p>
+        No.
+      </p>
+
+
+      <p>
+        CSR vs SSR can apply to
+        <strong>each page or view being rendered</strong>.
+      </p>
+
+
+      <p>
+        For example, an MPA could have:
+      </p>
+
+
+      <div class="diagram">
+/home
+   ↓
+Server generates HTML
+   ↓
+SSR
+
+/about
+   ↓
+Server generates HTML
+   ↓
+SSR
+
+/products
+   ↓
+Server generates HTML
+   ↓
+SSR
+      </div>
+
+
+      <p>
+        So SSR isn't synonymous with
+        "the first page."
+      </p>
+
+
+      <p>
+        It simply means:
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            The server generated the HTML being rendered.
+          </strong>
+        </p>
+
+      </div>
+
+
+
+      <h2>
+        Then Came SPA vs MPA
+      </h2>
+
+
+      <p>
+        This was where I realized I had actually been
+        asking a <strong>different question</strong>.
+      </p>
+
+
+      <p>
+        CSR vs SSR asks:
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            Where is the HTML/UI generated?
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        SPA vs MPA asks:
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            How does navigation happen?
+          </strong>
+        </p>
+
+      </div>
+
+
+
+      <h2>
+        MPA — Multi Page Application
+      </h2>
+
+
+      <p>
+        Suppose I'm on:
+      </p>
+
+
+      <pre><code>/home</code></pre>
+
+
+      <p>
+        and click:
+      </p>
+
+
+      <pre><code>About</code></pre>
+
+
+      <p>
+        The browser requests:
+      </p>
+
+
+      <pre><code>/about</code></pre>
+
+
+      <p>
+        and receives a
+        <strong>new HTML document</strong>.
+      </p>
+
+
+      <div class="diagram">
+/home
+   ↓
+click About
+   ↓
+request /about
+   ↓
+new HTML document
+   ↓
+/about
+      </div>
+
+
+      <p>
+        That's an
+        <strong>MPA — Multi Page Application</strong>.
+      </p>
+
+
+      <p>
+        And that new page could itself be SSR.
+      </p>
+
+
+      <div class="diagram">
+MPA + SSR
+
+/home     → Server → HTML
+/about    → Server → HTML
+/products → Server → HTML
+      </div>
+
+
+
+      <h2>
+        SPA — Single Page Application
+      </h2>
+
+
+      <p>
+        Now imagine:
+      </p>
+
+
+      <pre><code>/home</code></pre>
+
+
+      <p>
+        is already loaded.
+      </p>
+
+
+      <p>
+        I click:
+      </p>
+
+
+      <pre><code>About</code></pre>
+
+
+      <p>
+        Instead of requesting an entirely new HTML document,
+        JavaScript handles the navigation and updates
+        the application.
+      </p>
+
+
+      <div class="diagram">
+/home
+   ↓
+click About
+   ↓
+JavaScript
+   ↓
+updates view
+   ↓
+/about
+      </div>
+
+
+      <p>
+        That's a
+        <strong>SPA — Single Page Application</strong>.
+      </p>
+
+
+      <p>
+        The important idea is that the same application
+        remains loaded while the displayed view changes.
+      </p>
+
+
+
+      <h2>
+        The Part That Confused Me the Most
+      </h2>
+
+
+      <p>
+        I initially thought:
+      </p>
+
+
+      <div class="diagram">
+SPA = CSR
+MPA = SSR
+      </div>
+
+
+      <p>
+        But that's not necessarily true.
+      </p>
+
+
+      <p>
+        These are <strong>two different dimensions</strong>.
+      </p>
+
+
+
+      <h3>
+        CSR vs SSR
+      </h3>
+
+
+      <div class="diagram">
+WHERE is the HTML/UI generated?
+
+Server
+  ↓
+SSR
+
+Browser
+  ↓
+CSR
+      </div>
+
+
+
+      <h3>
+        SPA vs MPA
+      </h3>
+
+
+      <div class="diagram">
+HOW does navigation work?
+
+New HTML document
+  ↓
+MPA
+
+Same application handles navigation
+  ↓
+SPA
+      </div>
+
+
+      <p>
+        They aren't synonyms.
+      </p>
+
+
+
+      <h2>
+        So Can You Have SPA + SSR?
+      </h2>
+
+
+      <p>
+        Yes.
+      </p>
+
+
+      <p>
+        This was another thing that initially seemed
+        contradictory to me.
+      </p>
+
+
+      <div class="question">
+
+        <p>
+          "If it's SSR, the server creates the HTML.
+          If it's SPA, the browser handles the page.
+          How can both happen?"
+        </p>
+
+      </div>
+
+
+      <p>
+        The answer is that they describe
+        <strong>different parts of the experience</strong>.
+      </p>
+
+
+      <p>
+        A simplified SPA + SSR flow can look like this:
+      </p>
+
+
+      <div class="diagram">
+FIRST VISIT
+
+Browser
+   ↓
+request /home
+   ↓
+Server
+   ↓
+generates HTML
+   ↓
+Browser
+   ↓
+displays page
+   ↓
+JavaScript loads
+   ↓
+application becomes interactive
+      </div>
+
+
+      <p>
+        The initial page was
+        <strong>server-rendered</strong>.
+      </p>
+
+
+      <p>
+        Then:
+      </p>
+
+
+      <div class="diagram">
+LATER
+
+click About
+   ↓
+JavaScript handles navigation
+   ↓
+About view
+      </div>
+
+
+      <p>
+        The application can now handle navigation
+        without requesting an entirely new HTML document.
+      </p>
+
+
+      <p>
+        So in this simplified example:
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          The initial page is server-rendered,
+          while subsequent navigation is handled
+          on the client.
+        </p>
+
+      </div>
+
+
+      <p>
+        That's how
+        <strong>SSR and SPA behavior can coexist</strong>.
+      </p>
+
+
+
+      <h2>
+        But SPA Doesn't Always Mean
+        "First SSR, Then CSR"
+      </h2>
+
+
+      <p>
+        This is another important distinction.
+      </p>
+
+
+      <p>
+        A SPA can also be completely client-rendered:
+      </p>
+
+
+      <div class="diagram">
+/home
+   ↓
+Browser JavaScript
+   ↓
+CSR
+
+/about
+   ↓
+Browser JavaScript
+   ↓
+CSR
+
+/products
+   ↓
+Browser JavaScript
+   ↓
+CSR
+      </div>
+
+
+      <p>
+        So we shouldn't memorize:
+      </p>
+
+
+      <div class="question">
+
+        <p>
+          SPA → first page SSR
+        </p>
+
+      </div>
+
+
+      <p>
+        That's not a rule.
+      </p>
+
+
+      <p>
+        Similarly, we shouldn't memorize:
+      </p>
+
+
+      <div class="question">
+
+        <p>
+          React → CSR
+        </p>
+
+      </div>
+
+
+      <p>
+        React can be used with different rendering strategies.
+      </p>
+
+
+
+      <h2>
+        The Mental Model That Finally Made
+        Everything Click
+      </h2>
+
+
+      <p>
+        Instead of trying to remember:
+      </p>
+
+
+      <div class="diagram">
+React = CSR
+SPA = CSR
+Traditional website = SSR
+MPA = SSR
+      </div>
+
+
+      <p>
+        I now think about
+        <strong>two separate questions</strong>.
+      </p>
+
+
+      <h3>
+        Question 1
+      </h3>
+
+
+      <p>
+        <strong>
+          Where is the HTML/UI generated?
+        </strong>
+      </p>
+
+
+      <div class="diagram">
+Server  → SSR
+Client  → CSR
+      </div>
+
+
+      <h3>
+        Question 2
+      </h3>
+
+
+      <p>
+        <strong>
+          What happens when I navigate?
+        </strong>
+      </p>
+
+
+      <div class="diagram">
+New HTML document
+        ↓
+       MPA
+
+Same application handles navigation
+        ↓
+       SPA
+      </div>
+
+
+      <p>
+        And these can be combined.
+      </p>
+
+
+      <div class="diagram">
+             Rendering
+          ┌──────┴──────┐
+          SSR           CSR
+           │             │
+           └──────┬──────┘
+                  │
+             independent
+                  │
+             Architecture
+          ┌──────┴──────┐
+          MPA           SPA
+      </div>
+
+
+
+      <h2>
+        What I Was Actually Confusing
+      </h2>
+
+
+      <p>
+        Looking back, most of my confusion came from
+        treating these as
+        <strong>one classification system</strong>.
+      </p>
+
+
+      <p>
+        I was really mixing up:
+      </p>
+
+
+      <div class="diagram">
+Rendering
+    ↓
+CSR / SSR
+      </div>
+
+
+      <p>
+        with:
+      </p>
+
+
+      <div class="diagram">
+Application/navigation architecture
+    ↓
+SPA / MPA
+      </div>
+
+
+      <p>
+        Once I separated those two questions,
+        the concepts became much easier.
+      </p>
+
+
+
+      <h2>
+        The Four Terms in One Table
+      </h2>
+
+
+      <div style="overflow-x: auto;">
+
+        <table
+          style="
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 15px;
+          "
+        >
+
+          <thead>
+
+            <tr>
+
+              <th
+                style="
+                  text-align: left;
+                  padding: 12px;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                Concept
+              </th>
+
+              <th
+                style="
+                  text-align: left;
+                  padding: 12px;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                Question it answers
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr>
+
+              <td
+                style="
+                  padding: 12px;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <strong>CSR</strong>
+              </td>
+
+              <td
+                style="
+                  padding: 12px;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                Where is the UI/HTML generated?
+                → Client
+              </td>
+
+            </tr>
+
+
+            <tr>
+
+              <td
+                style="
+                  padding: 12px;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <strong>SSR</strong>
+              </td>
+
+              <td
+                style="
+                  padding: 12px;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                Where is the UI/HTML generated?
+                → Server
+              </td>
+
+            </tr>
+
+
+            <tr>
+
+              <td
+                style="
+                  padding: 12px;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <strong>SPA</strong>
+              </td>
+
+              <td
+                style="
+                  padding: 12px;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                Does the same application handle
+                navigation without loading a new document?
+              </td>
+
+            </tr>
+
+
+            <tr>
+
+              <td
+                style="
+                  padding: 12px;
+                "
+              >
+                <strong>MPA</strong>
+              </td>
+
+              <td
+                style="
+                  padding: 12px;
+                "
+              >
+                Does navigation load separate
+                HTML documents?
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div class="callout">
+
+        <p>
+          <strong>
+            CSR/SSR and SPA/MPA are not competing alternatives.
+            They describe different aspects of a web application.
+          </strong>
+        </p>
+
+      </div>
+
+
+
+      <h2>
+        One Last Example
+      </h2>
+
+
+      <p>
+        If I have:
+      </p>
+
+
+      <div class="diagram">
+/home
+   ↓
+server generates HTML
+
+/about
+   ↓
+server generates HTML
+
+/products
+   ↓
+server generates HTML
+      </div>
+
+
+      <p>
+        That's:
+      </p>
+
+
+      <p>
+        <strong>MPA + SSR</strong>
+      </p>
+
+
+      <p>
+        If I have:
+      </p>
+
+
+      <div class="diagram">
+/home
+   ↓
+server generates initial HTML
+
+JavaScript loads
+
+/about
+   ↓
+JavaScript handles navigation
+
+/products
+   ↓
+JavaScript handles navigation
+      </div>
+
+
+      <p>
+        That's a simplified example of:
+      </p>
+
+
+      <p>
+        <strong>SPA + SSR</strong>
+      </p>
+
+
+      <p>
+        And if the initial UI and subsequent views
+        are rendered on the client:
+      </p>
+
+
+      <div class="diagram">
+/home     → CSR
+/about    → CSR
+/products → CSR
+      </div>
+
+
+      <p>
+        that can be:
+      </p>
+
+
+      <p>
+        <strong>SPA + CSR</strong>
+      </p>
+
+
+
+      <h2>
+        What I Want to Remember
+      </h2>
+
+
+      <p>
+        I don't need to memorize which framework
+        belongs to which category.
+      </p>
+
+
+      <p>
+        I just need to ask:
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            Where was the HTML/UI generated?
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        And:
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            Did navigation load a new document
+            or stay within the same application?
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        Those two questions tell me what
+        I'm actually looking at.
+      </p>
+
+
+    </article>
+
+  </main>
+
+
+  <footer class="footer container">
+
+    <p>
+      Built while learning.
+    </p>
+
+    <p>
+      © 2026 Sai Sanjana Kambalapally
+    </p>
+
+  </footer>
+
+</body>
+
+</html>

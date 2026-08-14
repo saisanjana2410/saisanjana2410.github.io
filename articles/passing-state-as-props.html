@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Understanding state ownership, props, callbacks, lifting state up, and unidirectional data flow in React."
+  >
+
+  <title>
+    Passing State as Props — Who Actually Owns the State?
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="../style.css"
+  >
+
+  <script
+    src="../theme.js"
+    defer
+  ></script>
+
+</head>
+
+
+<body>
+
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
+
+  <header class="site-header">
+
+    <div class="container nav-container">
+
+      <a
+        href="../"
+        class="logo"
+      >
+        Sai Sanjana Kambalapally
+      </a>
+
+
+      <nav class="nav">
+
+        <a href="../">
+          Home
+        </a>
+
+        <a href="../blog/">
+          Blog
+        </a>
+
+        <a
+          href="https://github.com/saisanjana2410"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub ↗
+        </a>
+
+
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Switch theme"
+        >
+
+          <span class="theme-icon">
+            ☾
+          </span>
+
+          <span class="theme-label">
+            Dark
+          </span>
+
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =========================
+       ARTICLE
+  ========================== -->
+
+  <main class="article-page">
+
+
+    <a
+      href="../blog/"
+      class="back-link"
+    >
+      ← Back to blog
+    </a>
+
+
+    <header class="article-header">
+
+      <div class="article-meta">
+
+        <span class="category">
+          React
+        </span>
+
+        <span>
+          ·
+        </span>
+
+        <span>
+          Mental Model
+        </span>
+
+      </div>
+
+
+      <h1>
+        Passing State as Props —
+        Who Actually Owns the State?
+      </h1>
+
+
+      <p class="article-subtitle">
+        I understood that a parent could pass state to a child.
+        What confused me was what happened next: does the child
+        own that state, and how can the child change it?
+      </p>
+
+    </header>
+
+
+
+    <article class="article-body">
+
+
+      <!-- =========================
+           THE CONFUSION
+      ========================== -->
+
+      <h2>
+        The Confusion
+      </h2>
+
+
+      <p>
+        Suppose a parent owns some state:
+      </p>
+
+
+      <pre><code>function Parent() {
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;Child count={count} /&gt;
+  );
+}</code></pre>
+
+
+      <p>
+        The child receives <code>count</code> as a prop.
+      </p>
+
+
+      <div class="diagram">
+Parent
+  │
+  │ count = 0
+  ↓
+Child
+  │
+  └── receives count
+      </div>
+
+
+      <p>
+        My first instinct was:
+      </p>
+
+
+      <div class="question">
+
+        <p>
+          "If the child has the state now, doesn't the child own it?"
+        </p>
+
+      </div>
+
+
+      <p>
+        No.
+      </p>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            Passing state as a prop does not transfer ownership
+            of that state.
+          </strong>
+        </p>
+
+      </div>
+
+
+
+      <!-- =========================
+           OWNERSHIP
+      ========================== -->
+
+      <h2>
+        Who Owns the State?
+      </h2>
+
+
+      <p>
+        The component that calls <code>useState()</code> owns
+        that state.
+      </p>
+
+
+      <pre><code>function Parent() {
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;Child count={count} /&gt;
+  );
+}</code></pre>
+
+
+      <p>
+        Here, <code>Parent</code> owns <code>count</code>.
+        <code>Child</code> only receives its current value.
+      </p>
+
+
+      <p>
+        The child can read the prop:
+      </p>
+
+
+      <pre><code>function Child({ count }) {
+  return &lt;p&gt;Count: {count}&lt;/p&gt;;
+}</code></pre>
+
+
+      <p>
+        But it should not try to change it directly.
+      </p>
+
+
+      <pre><code>count = count + 1; // ❌</code></pre>
+
+
+
+      <!-- =========================
+           HOW CHILD CHANGES PARENT
+      ========================== -->
+
+      <h2>
+        So How Can the Child Change It?
+      </h2>
+
+
+      <p>
+        This is where callbacks come in.
+      </p>
+
+
+      <p>
+        The parent can pass a function along with the state:
+      </p>
+
+
+      <pre><code>function Parent() {
+  const [count, setCount] = useState(0);
+
+  function increment() {
+    setCount(count + 1);
+  }
+
+  return (
+    &lt;Child
+      count={count}
+      onIncrement={increment}
+    /&gt;
+  );
+}</code></pre>
+
+
+      <p>
+        The child receives the function:
+      </p>
+
+
+      <pre><code>function Child({ count, onIncrement }) {
+  return (
+    &lt;&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+
+      &lt;button onClick={onIncrement}&gt;
+        +1
+      &lt;/button&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+
+
+      <p>
+        The child isn't changing the parent's state directly.
+        It is calling a function that the parent provided.
+      </p>
+
+
+      <div class="diagram">
+Child
+  │
+  │ onIncrement()
+  ↓
+Parent's function
+  │
+  │ setCount(...)
+  ↓
+Parent state changes
+      </div>
+
+
+
+      <!-- =========================
+           COMPLETE CYCLE
+      ========================== -->
+
+      <h2>
+        The Complete Cycle
+      </h2>
+
+
+      <p>
+        Once the parent updates its state, the new value flows
+        back down to the child.
+      </p>
+
+
+      <div class="diagram">
+Parent owns state
+       ↓
+passes state as props
+       ↓
+Child receives props
+       ↓
+User interacts with Child
+       ↓
+Child calls callback
+       ↓
+Parent updates state
+       ↓
+Parent re-renders
+       ↓
+new props
+       ↓
+Child receives the new value
+      </div>
+
+
+      <p>
+        So the child can <strong>trigger</strong> a state change,
+        but it doesn't become the owner of that state.
+      </p>
+
+
+
+      <!-- =========================
+           LIFTING STATE
+      ========================== -->
+
+      <h2>
+        What If Two Children Need the Same State?
+      </h2>
+
+
+      <p>
+        Suppose two sibling components need to work with the
+        same piece of data:
+      </p>
+
+
+      <div class="diagram">
+        App
+       /   \
+   Input   Display
+      </div>
+
+
+      <p>
+        Instead of keeping separate copies of the state,
+        we move it to their common parent:
+      </p>
+
+
+      <div class="diagram">
+          App
+       name state
+         /    \
+      Input  Display
+      </div>
+
+
+      <p>
+        This is called <strong>lifting state up</strong>.
+      </p>
+
+
+      <p>
+        The parent becomes the single source of truth and
+        passes the value and necessary callbacks to its children.
+      </p>
+
+
+
+      <!-- =========================
+           UNIDIRECTIONAL FLOW
+      ========================== -->
+
+      <h2>
+        Unidirectional Data Flow
+      </h2>
+
+
+      <p>
+        This gives us one of the most important React mental models:
+        data flows downward through props.
+      </p>
+
+
+      <div class="diagram">
+             Parent
+          owns the state
+               │
+          props ↓
+               │
+             Child
+               │
+         user interaction
+               │
+        callback ↑
+               │
+             Parent
+               │
+          state changes
+               │
+               ↓
+          new props
+               │
+               ↓
+             Child
+      </div>
+
+
+      <p>
+        People sometimes describe this as "child-to-parent
+        communication," but the important detail is that the
+        child isn't taking ownership of the parent's state.
+      </p>
+
+
+      <p>
+        The parent gives the child a function. The child calls it.
+        The parent changes its own state, and the new value flows
+        down again.
+      </p>
+
+
+
+      <!-- =========================
+           FINAL MENTAL MODEL
+      ========================== -->
+
+      <h2>
+        The Mental Model I Want to Remember
+      </h2>
+
+
+      <div class="mental-model">
+
+        <p>
+          <strong>
+            Props are values a component receives.
+            State is data owned and managed by a component.
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        Passing state to a child does not transfer ownership.
+      </p>
+
+
+      <p>
+        If the child needs to cause a change, the parent can
+        pass a callback. The child calls the callback, the parent
+        updates its state, and the new state flows down as props.
+      </p>
+
+
+      <div class="callout">
+
+        <p>
+          <strong>
+            Parent owns state → child receives props →
+            child calls callback → parent updates state →
+            new props flow down.
+          </strong>
+        </p>
+
+      </div>
+
+
+      <p>
+        Once this clicked, props, state, callbacks, lifting state
+        up, and one-way data flow stopped feeling like separate
+        React rules. They became parts of the same model.
+      </p>
+
+
+    </article>
+
+  </main>
+
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer class="footer container">
+
+    <p>
+      Built while learning.
+    </p>
+
+
+    <p>
+      © 2026 Sai Sanjana Kambalapally
+    </p>
+
+  </footer>
+
+
+</body>
+
+</html>
